@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Misión - Escáner de Estructuras</title>
+
+
+<style>
+
+/* ================================
+   FONDO
+================================ */
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    margin:0;
+
+    padding:20px 10px 50px;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color:white;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            #101e43,
+            #050a1c 50%,
+            #02040d 100%
+        );
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+
+/* ESTRELLAS */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    background-image:
+
+        radial-gradient(
+            white 1px,
+            transparent 1px
+        ),
+
+        radial-gradient(
+            #72dfff 1px,
+            transparent 1px
+        );
+
+    background-size:
+        80px 80px,
+        140px 140px;
+
+    background-position:
+        20px 30px,
+        60px 90px;
+
+    opacity:.3;
+
+    z-index:0;
+}
+
+
+/* ================================
+   CONTENEDOR
+================================ */
+
+.contenedor{
+
+    width:95%;
+
+    max-width:1150px;
+
+    margin:auto;
+
+    position:relative;
+
+    z-index:1;
+}
+
+
+/* ================================
+   TITULO DE LA MISIÓN
+================================ */
+
+.titulo-mision{
+
+    text-align:center;
+
+    color:#6ee4ff;
+
+    font-size:28px;
+
+    margin:
+        5px
+        0
+        10px;
+
+    text-shadow:
+        0 0 10px #00cfff,
+        0 0 25px #007cff;
+}
+
+
+.instruccion{
+
+    text-align:center;
+
+    font-size:18px;
+
+    line-height:1.6;
+
+    color:#d8e5ff;
+
+    margin-bottom:25px;
+}
+
+
+/* ================================
+   PANEL
+================================ */
+
+.panel{
+
+    background:
+        rgba(
+            6,
+            15,
+            38,
+            .94
+        );
+
+    border:
+        1px solid
+        #294e96;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+        0 0 22px
+        rgba(
+            0,
+            120,
+            255,
+            .12
+        );
+}
+
+
+/* ================================
+   CANDIDATOS
+================================ */
+
+.candidatos{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:22px;
+
+    margin-top:25px;
+}
+
+
+.tarjeta{
+
+    width:320px;
+
+    padding:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0c1b40,
+            #071027
+        );
+
+    border:
+        1px solid
+        #345da5;
+
+    border-radius:20px;
+
+    cursor:grab;
+
+    transition:
+        transform .25s,
+        box-shadow .25s,
+        opacity .25s;
+
+    box-shadow:
+        0 0 15px
+        rgba(
+            0,
+            130,
+            255,
+            .12
+        );
+}
+
+
+.tarjeta:hover{
+
+    transform:
+        translateY(-6px);
+
+    box-shadow:
+        0 0 25px
+        rgba(
+            0,
+            190,
+            255,
+            .35
+        );
+}
+
+
+.tarjeta.arrastrando{
+
+    opacity:.45;
+
+    transform:
+        scale(.94);
+}
+
+
+.nombre{
+
+    text-align:center;
+
+    color:#72e3ff;
+
+    font-size:21px;
+
+    font-weight:bold;
+
+    margin-bottom:17px;
+}
+
+
+/* ================================
+   TABLAS DE CAYLEY
+================================ */
+
+.tabla{
+
+    border-collapse:collapse;
+
+    margin:auto;
+
+    font-size:18px;
+}
+
+
+.tabla th,
+.tabla td{
+
+    width:58px;
+
+    height:48px;
+
+    text-align:center;
+
+    border:
+        1px solid
+        #4568a8;
+}
+
+
+.tabla th{
+
+    background:#152d61;
+
+    color:#7ce7ff;
+}
+
+
+.tabla td{
+
+    background:#07132d;
+}
+
+
+.fuera{
+
+    color:#ff5577;
+
+    font-weight:bold;
+
+    background:
+        rgba(
+            255,
+            50,
+            80,
+            .13
+        ) !important;
+}
+
+
+.operacion{
+
+    text-align:center;
+
+    color:#aebfe0;
+
+    font-size:14px;
+
+    margin-top:15px;
+}
+
+
+/* ================================
+   ZONAS
+================================ */
+
+.zonas{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:25px;
+
+    margin-top:35px;
+}
+
+
+.zona{
+
+    width:350px;
+
+    min-height:180px;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    transition:.25s;
+}
+
+
+.zona h2{
+
+    margin-top:0;
+}
+
+
+.zona p{
+
+    color:#aab9dc;
+}
+
+
+.interna{
+
+    border:
+        2px dashed
+        #2affae;
+
+    background:
+        rgba(
+            0,
+            255,
+            160,
+            .035
+        );
+}
+
+
+.no-interna{
+
+    border:
+        2px dashed
+        #ff5274;
+
+    background:
+        rgba(
+            255,
+            50,
+            80,
+            .035
+        );
+}
+
+
+.zona.sobre{
+
+    transform:
+        scale(1.04);
+
+    box-shadow:
+        0 0 30px
+        rgba(
+            80,
+            190,
+            255,
+            .4
+        );
+}
+
+
+.contenido-zona{
+
+    min-height:70px;
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+
+/* ================================
+   MINI TARJETAS
+================================ */
+
+.mini{
+
+    padding:
+        10px
+        15px;
+
+    background:#172b5c;
+
+    border:
+        1px solid
+        #4c70b2;
+
+    border-radius:12px;
+
+    font-weight:bold;
+}
+
+
+/* ================================
+   MENSAJES
+================================ */
+
+.mensaje{
+
+    display:none;
+
+    padding:18px;
+
+    margin-top:25px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    line-height:1.6;
+}
+
+
+.mensaje.correcto{
+
+    display:block;
+
+    color:#69ffd0;
+
+    background:
+        rgba(
+            0,
+            255,
+            160,
+            .07
+        );
+
+    border:
+        1px solid
+        #2cffad;
+}
+
+
+.mensaje.error{
+
+    display:block;
+
+    color:#ff829a;
+
+    background:
+        rgba(
+            255,
+            50,
+            80,
+            .07
+        );
+
+    border:
+        1px solid
+        #ff5275;
+}
+
+
+/* ================================
+   JUSTIFICACIONES
+================================ */
+
+#justificaciones{
+
+    display:none;
+}
+
+
+.justificacion{
+
+    padding:20px;
+
+    margin-top:18px;
+
+    background:#07132e;
+
+    border:
+        1px solid
+        #304d89;
+
+    border-radius:17px;
+}
+
+
+.justificacion h3{
+
+    text-align:center;
+
+    color:#70e0ff;
+}
+
+
+.justificacion p{
+
+    text-align:center;
+
+    color:#c6d3ed;
+
+    line-height:1.5;
+}
+
+
+.opciones{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:10px;
+}
+
+
+.opciones button{
+
+    padding:
+        12px
+        15px;
+
+    border-radius:11px;
+
+    border:
+        1px solid
+        #4569a7;
+
+    background:#132653;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.opciones button:hover{
+
+    background:#24458b;
+
+    transform:
+        translateY(-2px);
+}
+
+
+.opciones button.correcta{
+
+    background:#106847;
+
+    border-color:#32ffb0;
+}
+
+
+.opciones button.incorrecta{
+
+    background:#711e37;
+
+    border-color:#ff5277;
+}
+
+
+/* ================================
+   REACTOR
+================================ */
+
+#reactor{
+
+    display:none;
+}
+
+
+.reactor{
+
+    text-align:center;
+}
+
+
+.nucleo{
+
+    width:145px;
+
+    height:145px;
+
+    margin:
+        30px
+        auto;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:52px;
+
+    background:#050c21;
+
+    border:
+        4px solid
+        #31466e;
+
+    transition:1s;
+}
+
+
+.nucleo.activado{
+
+    border-color:#62ffff;
+
+    background:#064052;
+
+    box-shadow:
+
+        0 0 20px #00eaff,
+
+        0 0 50px #00c4ff,
+
+        0 0 100px #008cff;
+
+    animation:
+        pulso 1s infinite alternate;
+}
+
+
+@keyframes pulso{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.09);
+    }
+
+}
+
+
+.propiedad{
+
+    display:inline-block;
+
+    padding:
+        12px
+        18px;
+
+    margin:7px;
+
+    border-radius:12px;
+
+    background:#101b38;
+
+    border:
+        1px solid
+        #30456f;
+
+    color:#687795;
+
+    transition:.7s;
+}
+
+
+.propiedad.activada{
+
+    color:#6affce;
+
+    border-color:#2cffad;
+
+    box-shadow:
+        0 0 15px
+        rgba(
+            40,
+            255,
+            170,
+            .35
+        );
+}
+
+
+/* ================================
+   CELULAR
+================================ */
+
+@media(max-width:700px){
+
+    .titulo-mision{
+
+        font-size:24px;
+
+    }
+
+
+    .tarjeta{
+
+        width:100%;
+
+        max-width:350px;
+
+    }
+
+
+    .zona{
+
+        width:100%;
+
+    }
+
+
+    .tabla{
+
+        font-size:14px;
+
+    }
+
+
+    .tabla th,
+    .tabla td{
+
+        width:43px;
+
+        height:42px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+<!-- =========================================
+     MISIÓN
+========================================= -->
+
+<div class="panel">
+
+
+<h1 class="titulo-mision">
+
+🛰️ MISIÓN: ESCÁNER DE ESTRUCTURAS
+
+</h1>
+
+
+<p class="instruccion">
+
+Tres estructuras desconocidas han aparecido
+en el radar.
+
+</p>
+
+
+<p class="instruccion">
+
+Cada una presenta una
+<strong>tabla de Cayley</strong>.
+
+</p>
+
+
+<p class="instruccion">
+
+🔬 Observa &nbsp; · &nbsp;
+🧠 Razona &nbsp; · &nbsp;
+🪐 Clasifica
+
+</p>
+
+
+<p class="instruccion">
+
+<strong>
+Arrastra cada estructura hacia el sector que corresponda.
+</strong>
+
+</p>
+
+
+
+<!-- =========================================
+     CANDIDATOS
+========================================= -->
+
+<div class="candidatos">
+
+
+
+<!-- CANDIDATO A -->
+
+<div
+    class="tarjeta"
+    draggable="true"
+    id="A"
+>
+
+
+<div class="nombre">
+
+🍎 CANDIDATO A
+
+</div>
+
+
+<table class="tabla">
+
+
+<tr>
+
+<th>*</th>
+
+<th>🍎</th>
+
+<th>🍌</th>
+
+<th>🍇</th>
+
+</tr>
+
+
+<tr>
+
+<th>🍎</th>
+
+<td>🍎</td>
+
+<td>🍌</td>
+
+<td>🍇</td>
+
+</tr>
+
+
+<tr>
+
+<th>🍌</th>
+
+<td>🍌</td>
+
+<td>🍇</td>
+
+<td>🍎</td>
+
+</tr>
+
+
+<tr>
+
+<th>🍇</th>
+
+<td>🍇</td>
+
+<td>🍎</td>
+
+<td>🍌</td>
+
+</tr>
+
+
+</table>
+
+
+<div class="operacion">
+
+M = {🍎, 🍌, 🍇}
+
+</div>
+
+
+</div>
+
+
+
+<!-- CANDIDATO B -->
+
+<div
+    class="tarjeta"
+    draggable="true"
+    id="B"
+>
+
+
+<div class="nombre">
+
+🔷 CANDIDATO B
+
+</div>
+
+
+<table class="tabla">
+
+
+<tr>
+
+<th>*</th>
+
+<th>🔺</th>
+
+<th>🔵</th>
+
+<th>⭐</th>
+
+</tr>
+
+
+<tr>
+
+<th>🔺</th>
+
+<td>🔺</td>
+
+<td>🔵</td>
+
+<td>⭐</td>
+
+</tr>
+
+
+<tr>
+
+<th>🔵</th>
+
+<td>🔵</td>
+
+<td>⭐</td>
+
+<td>🔺</td>
+
+</tr>
+
+
+<tr>
+
+<th>⭐</th>
+
+<td>⭐</td>
+
+<td>🔺</td>
+
+<td class="fuera">❤️</td>
+
+</tr>
+
+
+</table>
+
+
+<div class="operacion">
+
+M = {🔺, 🔵, ⭐}
+
+</div>
+
+
+</div>
+
+
+
+<!-- CANDIDATO C -->
+
+<div
+    class="tarjeta"
+    draggable="true"
+    id="C"
+>
+
+
+<div class="nombre">
+
+🔢 CANDIDATO C
+
+</div>
+
+
+<table class="tabla">
+
+
+<tr>
+
+<th>÷</th>
+
+<th>-2</th>
+
+<th>-1</th>
+
+<th>1</th>
+
+<th>2</th>
+
+</tr>
+
+
+<tr>
+
+<th>-2</th>
+
+<td>1</td>
+
+<td>2</td>
+
+<td>-2</td>
+
+<td>-1</td>
+
+</tr>
+
+
+<tr>
+
+<th>-1</th>
+
+<td>2</td>
+
+<td>1</td>
+
+<td>-1</td>
+
+<td>-0,5</td>
+
+</tr>
+
+
+<tr>
+
+<th>1</th>
+
+<td>-1</td>
+
+<td>-1</td>
+
+<td>1</td>
+
+<td>0,5</td>
+
+</tr>
+
+
+<tr>
+
+<th>2</th>
+
+<td>-0,5</td>
+
+<td>-2</td>
+
+<td>0,5</td>
+
+<td>1</td>
+
+</tr>
+
+
+</table>
+
+
+<div class="operacion">
+
+M = {-2, -1, 1, 2}
+
+<br>
+
+Operación: división
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =========================================
+     ZONAS DE ARRASTRE
+========================================= -->
+
+<div class="zonas">
+
+
+<div
+    class="zona interna"
+    id="zonaInterna"
+>
+
+
+<h2>
+
+🟢 COMPOSICIÓN INTERNA
+
+</h2>
+
+
+<p>
+
+La operación permanece dentro del conjunto.
+
+</p>
+
+
+<div
+    class="contenido-zona"
+>
+
+Arrastra aquí
+
+</div>
+
+
+</div>
+
+
+
+<div
+    class="zona no-interna"
+    id="zonaNoInterna"
+>
+
+
+<h2>
+
+🔴 NO ES COMPOSICIÓN INTERNA
+
+</h2>
+
+
+<p>
+
+Algún resultado sale del conjunto.
+
+</p>
+
+
+<div
+    class="contenido-zona"
+>
+
+Arrastra aquí
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div
+    id="mensajeClasificacion"
+    class="mensaje"
+>
+</div>
+
+
+</div>
+
+
+
+<!-- =========================================
+     JUSTIFICACIÓN
+========================================= -->
+
+<div
+    class="panel"
+    id="justificaciones"
+>
+
+
+<h2
+    style="
+    text-align:center;
+    color:#70e3ff;
+    "
+>
+
+🔎 ANALIZA TUS DECISIONES
+
+</h2>
+
+
+<p class="instruccion">
+
+Clasificar no es suficiente.
+
+Ahora demuestra que encontraste
+la falla observando las tablas.
+
+</p>
+
+
+
+<!-- A -->
+
+<div class="justificacion">
+
+
+<h3>
+
+🍎 CANDIDATO A
+
+</h3>
+
+
+<p>
+
+¿Por qué esta estructura sí supera
+la prueba de composición interna?
+
+</p>
+
+
+<div class="opciones">
+
+
+<button
+onclick="responder(this,true)"
+>
+
+Todos los resultados pertenecen al conjunto.
+
+</button>
+
+
+<button
+onclick="responder(this,false)"
+>
+
+Porque utiliza frutas.
+
+</button>
+
+
+<button
+onclick="responder(this,false)"
+>
+
+Porque la tabla tiene muchos resultados.
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- B -->
+
+<div class="justificacion">
+
+
+<h3>
+
+🔷 CANDIDATO B
+
+</h3>
+
+
+<p>
+
+¿Por qué esta estructura NO supera
+la prueba?
+
+</p>
+
+
+<div class="opciones">
+
+
+<button
+onclick="responder(this,true)"
+>
+
+Aparece ❤️ y no pertenece a M.
+
+</button>
+
+
+<button
+onclick="responder(this,false)"
+>
+
+Porque utiliza figuras.
+
+</button>
+
+
+<button
+onclick="responder(this,false)"
+>
+
+Porque hay demasiados elementos.
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- C -->
+
+<div class="justificacion">
+
+
+<h3>
+
+🔢 CANDIDATO C
+
+</h3>
+
+
+<p>
+
+Observa la división.
+
+¿Por qué esta estructura NO supera
+la prueba?
+
+</p>
+
+
+<div class="opciones">
+
+
+<button
+onclick="responder(this,true)"
+>
+
+Porque aparecen resultados como 0,5 que no pertenecen a M.
+
+</button>
+
+
+<button
+onclick="responder(this,false)"
+>
+
+Porque la división es una operación complicada.
+
+</button>
+
+
+<button
+onclick="responder(this,false)"
+>
+
+Porque utiliza números negativos.
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =========================================
+     REACTOR AXIOM
+========================================= -->
+
+<div
+    class="panel"
+    id="reactor"
+>
+
+
+<div class="reactor">
+
+
+<h2>
+
+⚡ REACTOR AXIOM ⚡
+
+</h2>
+
+
+<div
+    class="nucleo"
+    id="nucleo"
+>
+
+⚡
+
+</div>
+
+
+<div>
+
+
+<div
+    class="propiedad"
+    id="propiedad"
+>
+
+🔷 Ley de composición interna
+
+</div>
+
+
+</div>
+
+
+<h2>
+
+🌟 ¡PRIMER NÚCLEO ACTIVADO!
+
+</h2>
+
+
+<p>
+
+Has descubierto que una operación puede
+ser una ley de composición interna cuando
+el resultado permanece dentro del conjunto.
+
+</p>
+
+
+<p
+style="
+color:#6affce;
+font-size:20px;
+font-weight:bold;
+"
+>
+
+🪐 NÚCLEO ESTABILIZADO
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+let arrastrado = null;
+
+let clasificados = 0;
+
+let respuestas = {};
+
+let justificacionesCorrectas = 0;
+
+
+/* =========================================
+   ARRASTRAR
+========================================= */
+
+const tarjetas =
+document.querySelectorAll(".tarjeta");
+
+
+tarjetas.forEach(tarjeta => {
+
+
+    tarjeta.addEventListener(
+        "dragstart",
+        function(){
+
+            arrastrado = this;
+
+            this.classList.add(
+                "arrastrando"
+            );
+
+        }
+    );
+
+
+    tarjeta.addEventListener(
+        "dragend",
+        function(){
+
+            this.classList.remove(
+                "arrastrando"
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================
+   ZONAS
+========================================= */
+
+const zonas =
+document.querySelectorAll(".zona");
+
+
+zonas.forEach(zona => {
+
+
+    zona.addEventListener(
+        "dragover",
+        function(e){
+
+            e.preventDefault();
+
+            this.classList.add(
+                "sobre"
+            );
+
+        }
+    );
+
+
+    zona.addEventListener(
+        "dragleave",
+        function(){
+
+            this.classList.remove(
+                "sobre"
+            );
+
+        }
+    );
+
+
+    zona.addEventListener(
+        "drop",
+        function(e){
+
+            e.preventDefault();
+
+            this.classList.remove(
+                "sobre"
+            );
+
+            colocar(
+                arrastrado,
+                this
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================
+   COLOCAR TARJETA
+========================================= */
+
+function colocar(
+    tarjeta,
+    zona
+){
+
+    if(!tarjeta)
+        return;
+
+
+    const id =
+        tarjeta.id;
+
+
+    const esInterna =
+        zona.id ===
+        "zonaInterna";
+
+
+    respuestas[id] =
+        esInterna;
+
+
+    tarjeta.remove();
+
+
+    const mini =
+        document.createElement(
+            "div"
+        );
+
+
+    mini.className =
+        "mini";
+
+
+    mini.innerHTML =
+        tarjeta.querySelector(
+            ".nombre"
+        ).innerText;
+
+
+    zona
+        .querySelector(
+            ".contenido-zona"
+        )
+        .appendChild(
+            mini
+        );
+
+
+    clasificados++;
+
+
+    if(
+        clasificados === 3
+    ){
+
+        analizar();
+
+    }
+
+}
+
+
+/* =========================================
+   ANALIZAR
+========================================= */
+
+function analizar(){
+
+    const mensaje =
+        document.getElementById(
+            "mensajeClasificacion"
+        );
+
+
+    const correcto =
+
+        respuestas["A"] === true &&
+
+        respuestas["B"] === false &&
+
+        respuestas["C"] === false;
+
+
+    if(correcto){
+
+        mensaje.className =
+            "mensaje correcto";
+
+
+        mensaje.innerHTML =
+
+        "🟢 <strong>¡CLASIFICACIÓN CORRECTA!</strong><br><br>" +
+
+        "Has identificado correctamente " +
+        "las tres estructuras.<br><br>" +
+
+        "Ahora demuestra cómo encontraste " +
+        "cada respuesta.";
+
+    }
+
+    else{
+
+        mensaje.className =
+            "mensaje error";
+
+
+        mensaje.innerHTML =
+
+        "🔴 <strong>Hay una clasificación incorrecta.</strong><br><br>" +
+
+        "Observa nuevamente las tablas y busca " +
+        "si todos los resultados pertenecen al conjunto.";
+
+    }
+
+
+    document.getElementById(
+        "justificaciones"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "justificaciones"
+    ).scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================
+   RESPUESTAS
+========================================= */
+
+function responder(
+    boton,
+    correcta
+){
+
+
+    if(correcta){
+
+        boton.classList.add(
+            "correcta"
+        );
+
+
+        justificacionesCorrectas++;
+
+
+        const botones =
+            boton
+            .parentElement
+            .querySelectorAll(
+                "button"
+            );
+
+
+        botones.forEach(
+            b => b.disabled = true
+        );
+
+
+        if(
+            justificacionesCorrectas === 3
+        ){
+
+            activarReactor();
+
+        }
+
+    }
+
+    else{
+
+        boton.classList.add(
+            "incorrecta"
+        );
+
+
+        setTimeout(
+            () => {
+
+                boton.classList.remove(
+                    "incorrecta"
+                );
+
+            },
+            800
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   REACTOR
+========================================= */
+
+function activarReactor(){
+
+
+    const reactor =
+        document.getElementById(
+            "reactor"
+        );
+
+
+    reactor.style.display =
+        "block";
+
+
+    reactor.scrollIntoView({
+        behavior:"smooth"
+    });
+
+
+    setTimeout(
+        () => {
+
+            document
+                .getElementById(
+                    "propiedad"
+                )
+                .classList.add(
+                    "activada"
+                );
+
+        },
+        500
+    );
+
+
+    setTimeout(
+        () => {
+
+            document
+                .getElementById(
+                    "nucleo"
+                )
+                .classList.add(
+                    "activado"
+                );
+
+        },
+        1200
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

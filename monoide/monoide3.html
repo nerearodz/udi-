@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Planeta Monoide - Reactor AXIOM</title>
+
+<style>
+
+/* =========================
+   CONFIGURACIÓN GENERAL
+========================= */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    color:white;
+    background:#030712;
+    overflow-x:hidden;
+}
+
+/* ESTRELLAS */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+
+    background-image:
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(#7ddfff 1px, transparent 1px);
+
+    background-size:80px 80px, 140px 140px;
+    background-position:20px 30px, 50px 90px;
+
+    opacity:.35;
+    pointer-events:none;
+}
+
+/* =========================
+   CONTENEDOR
+========================= */
+
+.contenedor{
+    width:95%;
+    max-width:1100px;
+    margin:auto;
+    padding:30px 10px 70px;
+    position:relative;
+    z-index:1;
+}
+
+/* =========================
+   TITULO
+========================= */
+
+.titulo{
+    text-align:center;
+    font-size:36px;
+    color:#68ddff;
+    text-shadow:
+        0 0 10px #00c8ff,
+        0 0 25px #0077ff;
+
+    margin-bottom:5px;
+}
+
+.subtitulo{
+    text-align:center;
+    color:#b9c8ed;
+    margin-bottom:30px;
+}
+
+/* =========================
+   PANELES
+========================= */
+
+.panel{
+    background:rgba(7,18,45,.93);
+    border:1px solid #294f9c;
+    border-radius:20px;
+    padding:25px;
+    margin-bottom:25px;
+
+    box-shadow:
+        0 0 20px rgba(0,120,255,.15);
+}
+
+/* =========================
+   HISTORIA
+========================= */
+
+.historia{
+    font-size:17px;
+    line-height:1.6;
+}
+
+.alerta{
+    margin-top:20px;
+    padding:16px;
+
+    border-left:4px solid #ffd84a;
+
+    background:rgba(255,216,74,.07);
+
+    border-radius:8px;
+}
+
+/* =========================
+   INSTRUCCIONES
+========================= */
+
+.instruccion{
+    text-align:center;
+    font-size:19px;
+    color:#d9e7ff;
+}
+
+/* =========================
+   CANDIDATOS
+========================= */
+
+.candidatos{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    margin-top:25px;
+}
+
+.tarjeta{
+    width:300px;
+
+    background:#091633;
+
+    border:1px solid #3459a7;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    cursor:grab;
+
+    transition:.25s;
+
+    box-shadow:0 0 12px rgba(0,130,255,.12);
+}
+
+.tarjeta:hover{
+    transform:translateY(-5px);
+
+    box-shadow:
+        0 0 20px rgba(0,180,255,.35);
+}
+
+.tarjeta.arrastrando{
+    opacity:.45;
+    transform:scale(.95);
+}
+
+.nombre-candidato{
+    text-align:center;
+
+    color:#6cddff;
+
+    font-size:21px;
+
+    margin-bottom:15px;
+}
+
+/* =========================
+   TABLAS DE CAYLEY
+========================= */
+
+.tabla{
+    border-collapse:collapse;
+
+    margin:auto;
+
+    font-size:18px;
+}
+
+.tabla th,
+.tabla td{
+    width:52px;
+    height:45px;
+
+    text-align:center;
+
+    border:1px solid #466ab0;
+}
+
+.tabla th{
+    background:#162c60;
+    color:#7ce5ff;
+}
+
+.tabla td{
+    background:#07132e;
+}
+
+.fuera{
+    color:#ff5577;
+    font-weight:bold;
+}
+
+/* =========================
+   ZONAS DE ARRASTRE
+========================= */
+
+.zonas{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+
+    margin-top:35px;
+}
+
+.zona{
+    width:320px;
+    min-height:150px;
+
+    border:2px dashed #506da8;
+
+    border-radius:20px;
+
+    padding:20px;
+
+    text-align:center;
+
+    transition:.25s;
+}
+
+.zona h2{
+    margin-top:0;
+}
+
+.zona.monoide{
+    border-color:#26ffad;
+    background:rgba(0,255,150,.04);
+}
+
+.zona.no-monoide{
+    border-color:#ff4f73;
+    background:rgba(255,50,80,.04);
+}
+
+.zona.sobre{
+    transform:scale(1.03);
+
+    box-shadow:
+        0 0 25px rgba(70,200,255,.3);
+}
+
+.zona-contenido{
+    min-height:70px;
+
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+
+    gap:8px;
+}
+
+/* =========================
+   MINI TARJETA DENTRO DE ZONA
+========================= */
+
+.mini{
+    background:#172b5d;
+
+    padding:8px 12px;
+
+    border-radius:10px;
+
+    font-weight:bold;
+}
+
+/* =========================
+   MENSAJES
+========================= */
+
+.mensaje{
+    display:none;
+
+    margin-top:20px;
+
+    padding:18px;
+
+    border-radius:14px;
+
+    text-align:center;
+
+    line-height:1.5;
+}
+
+.correcto{
+    display:block;
+
+    color:#65ffc5;
+
+    border:1px solid #25eaa5;
+
+    background:rgba(0,255,150,.08);
+}
+
+.error{
+    display:block;
+
+    color:#ff839b;
+
+    border:1px solid #ff4f70;
+
+    background:rgba(255,50,80,.08);
+}
+
+/* =========================
+   JUSTIFICACIÓN
+========================= */
+
+.justificacion{
+    display:none;
+
+    margin-top:15px;
+
+    padding:18px;
+
+    border-radius:15px;
+
+    background:#081532;
+
+    border:1px solid #34518d;
+}
+
+.justificacion h3{
+    text-align:center;
+}
+
+.opciones{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:10px;
+}
+
+.opciones button{
+    padding:11px 15px;
+
+    border-radius:10px;
+
+    border:1px solid #4267ad;
+
+    background:#142653;
+
+    color:white;
+
+    cursor:pointer;
+}
+
+.opciones button:hover{
+    background:#23458c;
+}
+
+/* =========================
+   BOTÓN
+========================= */
+
+.boton{
+    display:block;
+
+    margin:30px auto 0;
+
+    padding:15px 28px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#1677b8;
+
+    color:white;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    box-shadow:0 0 15px rgba(0,180,255,.3);
+
+    transition:.2s;
+}
+
+.boton:hover{
+    transform:scale(1.05);
+
+    box-shadow:
+        0 0 25px rgba(0,210,255,.6);
+}
+
+.boton:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+}
+
+/* =========================
+   REACTOR AXIOM
+========================= */
+
+#reactor{
+    display:none;
+}
+
+.reactor{
+    text-align:center;
+}
+
+.nucleo{
+    width:150px;
+    height:150px;
+
+    margin:25px auto;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:50px;
+
+    background:#071027;
+
+    border:4px solid #31466f;
+
+    transition:1s;
+}
+
+.nucleo.activado{
+    border-color:#62faff;
+
+    background:#063b50;
+
+    box-shadow:
+        0 0 20px #00eaff,
+        0 0 50px #00bfff,
+        0 0 90px #008cff;
+
+    animation:pulso 1s infinite alternate;
+}
+
+@keyframes pulso{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.08);
+    }
+
+}
+
+/* =========================
+   PROPIEDADES
+========================= */
+
+.propiedades{
+    display:flex;
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:12px;
+
+    margin:20px;
+}
+
+.propiedad{
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    background:#101d3c;
+
+    border:1px solid #344b78;
+
+    color:#7786a9;
+}
+
+.propiedad.activada{
+    color:#69ffd0;
+
+    border-color:#2affae;
+
+    box-shadow:
+        0 0 12px rgba(30,255,170,.35);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:700px){
+
+    .titulo{
+        font-size:28px;
+    }
+
+    .tarjeta{
+        width:100%;
+        max-width:340px;
+    }
+
+    .zona{
+        width:100%;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="contenedor">
+
+
+<!-- =========================
+     ENCABEZADO
+========================= -->
+
+<h1 class="titulo">
+🪐 PLANETA MONOIDE
+</h1>
+
+<div class="subtitulo">
+Aventura Algebraica · Misión 01 · Reactor AXIOM
+</div>
+
+
+<!-- =========================
+     HISTORIA
+========================= -->
+
+<div class="panel historia">
+
+<p>
+<strong>Agente, has llegado al primer planeta de la Galaxia Algebraica.</strong>
+</p>
+
+<p>
+Este planeta contiene una estructura fundamental:
+<strong>(M ; *)</strong>.
+</p>
+
+<p>
+El núcleo del planeta permanece bloqueado.
+Para activarlo deberás descubrir qué estructuras son capaces
+de mantenerse estables.
+</p>
+
+<div class="alerta">
+
+🔎 <strong>EL ESCÁNER HA DETECTADO TRES ESTRUCTURAS.</strong>
+
+<br><br>
+
+No todas son monoides.
+
+Tu misión será investigar sus tablas de Cayley y descubrir
+cuáles pueden activar el planeta.
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     INSTRUCCIÓN
+========================= -->
+
+<div class="panel">
+
+<p class="instruccion">
+
+🚀 <strong>Arrastra cada estructura</strong>
+hacia el lugar que creas correcto.
+
+</p>
+
+<p class="instruccion">
+
+🟢 MONOIDE &nbsp;&nbsp;&nbsp;&nbsp;
+🔴 NO MONOIDE
+
+</p>
+
+
+<!-- =========================
+     CANDIDATOS
+========================= -->
+
+<div class="candidatos">
+
+
+<!-- CANDIDATO A -->
+
+<div
+class="tarjeta"
+draggable="true"
+id="A"
+>
+
+<div class="nombre-candidato">
+🟢 CANDIDATO A
+</div>
+
+<table class="tabla">
+
+<tr>
+<th>*</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+
+<tr>
+<th>0</th>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+</tr>
+
+<tr>
+<th>1</th>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+</tr>
+
+<tr>
+<th>2</th>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+</tr>
+
+</table>
+
+</div>
+
+
+<!-- CANDIDATO B -->
+
+<div
+class="tarjeta"
+draggable="true"
+id="B"
+>
+
+<div class="nombre-candidato">
+🔴 CANDIDATO B
+</div>
+
+<table class="tabla">
+
+<tr>
+<th>*</th>
+<th>🍎</th>
+<th>🍌</th>
+<th>🍇</th>
+</tr>
+
+<tr>
+<th>🍎</th>
+<td>🍎</td>
+<td>🍌</td>
+<td>🍇</td>
+</tr>
+
+<tr>
+<th>🍌</th>
+<td>🍌</td>
+<td>🍇</td>
+<td>🍎</td>
+</tr>
+
+<tr>
+<th>🍇</th>
+<td>🍇</td>
+<td>🍎</td>
+<td class="fuera">⭐</td>
+</tr>
+
+</table>
+
+</div>
+
+
+<!-- CANDIDATO C -->
+
+<div
+class="tarjeta"
+draggable="true"
+id="C"
+>
+
+<div class="nombre-candidato">
+🟠 CANDIDATO C
+</div>
+
+<table class="tabla">
+
+<tr>
+<th>*</th>
+<th>▲</th>
+<th>●</th>
+<th>■</th>
+</tr>
+
+<tr>
+<th>▲</th>
+<td>▲</td>
+<td>●</td>
+<td>■</td>
+</tr>
+
+<tr>
+<th>●</th>
+<td>●</td>
+<td>●</td>
+<td>■</td>
+</tr>
+
+<tr>
+<th>■</th>
+<td>■</td>
+<td>■</td>
+<td>■</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     ZONAS
+========================= -->
+
+<div class="zonas">
+
+
+<div
+class="zona monoide"
+id="zonaMonoide"
+>
+
+<h2>🟢 MONOIDE</h2>
+
+<p>
+Estructuras que pueden activar el planeta
+</p>
+
+<div
+class="zona-contenido"
+id="contenidoMonoide"
+>
+Arrastra aquí
+</div>
+
+</div>
+
+
+<div
+class="zona no-monoide"
+id="zonaNoMonoide"
+>
+
+<h2>🔴 NO MONOIDE</h2>
+
+<p>
+Estructuras que presentan alguna falla
+</p>
+
+<div
+class="zona-contenido"
+id="contenidoNoMonoide"
+>
+Arrastra aquí
+</div>
+
+</div>
+
+</div>
+
+
+<!-- MENSAJE -->
+
+<div
+id="mensajeGeneral"
+class="mensaje"
+>
+</div>
+
+
+</div>
+
+
+<!-- =========================
+     JUSTIFICACIONES
+========================= -->
+
+<div
+class="panel"
+id="justificaciones"
+style="display:none"
+>
+
+<h2 style="text-align:center">
+🔎 ANALIZA TUS DECISIONES
+</h2>
+
+<p style="text-align:center">
+
+Ahora debes demostrar que tus decisiones tienen sentido.
+
+</p>
+
+
+<!-- JUSTIFICACIÓN B -->
+
+<div
+class="justificacion"
+id="justB"
+>
+
+<h3>
+🔴 CANDIDATO B
+</h3>
+
+<p>
+¿Por qué esta estructura NO puede ser un monoide?
+</p>
+
+<div class="opciones">
+
+<button onclick="justificar('B',false)">
+No tiene elemento neutro
+</button>
+
+<button onclick="justificar('B',true)">
+Hay un resultado que sale del conjunto
+</button>
+
+<button onclick="justificar('B',false)">
+No es asociativa
+</button>
+
+</div>
+
+</div>
+
+
+<!-- JUSTIFICACIÓN C -->
+
+<div
+class="justificacion"
+id="justC"
+>
+
+<h3>
+🟠 CANDIDATO C
+</h3>
+
+<p>
+Esta tabla tiene una operación interna.
+¿Qué debes investigar ahora?
+</p>
+
+<div class="opciones">
+
+<button onclick="justificar('C',false)">
+Buscar un resultado fuera del conjunto
+</button>
+
+<button onclick="justificar('C',true)">
+Comprobar las otras propiedades necesarias
+</button>
+
+<button onclick="justificar('C',false)">
+Ya es automáticamente un monoide
+</button>
+
+</div>
+
+</div>
+
+
+<!-- JUSTIFICACIÓN A -->
+
+<div
+class="justificacion"
+id="justA"
+>
+
+<h3>
+🟢 CANDIDATO A
+</h3>
+
+<p>
+¿Por qué esta estructura puede ser un monoide?
+</p>
+
+<div class="opciones">
+
+<button onclick="justificar('A',true)">
+Cumple las propiedades necesarias
+</button>
+
+<button onclick="justificar('A',false)">
+Porque todos los resultados son diferentes
+</button>
+
+<button onclick="justificar('A',false)">
+Porque utiliza números
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     REACTOR
+========================= -->
+
+<div
+class="panel"
+id="reactor"
+>
+
+<div class="reactor">
+
+<h2>
+⚡ REACTOR AXIOM
+</h2>
+
+<div
+class="nucleo"
+id="nucleo"
+>
+⚡
+</div>
+
+
+<div class="propiedades">
+
+<div
+class="propiedad"
+id="propInterna"
+>
+🔷 Operación interna
+</div>
+
+<div
+class="propiedad"
+id="propNeutro"
+>
+🟢 Elemento neutro
+</div>
+
+<div
+class="propiedad"
+id="propAsociativa"
+>
+🟣 Asociatividad
+</div>
+
+</div>
+
+
+<h2>
+🌟 ¡PLANETA MONOIDE ACTIVADO!
+</h2>
+
+<p>
+
+Has descubierto que una estructura
+<strong>(M ; *)</strong>
+es un monoide cuando cumple las condiciones necesarias.
+
+</p>
+
+<p style="font-size:20px;color:#6affc8">
+
+⚡ NÚCLEO ESTABILIZADO ⚡
+
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+let arrastrado=null;
+
+let clasificados=0;
+
+let respuestas={};
+
+let justificacionesCorrectas=0;
+
+
+/* =========================================
+   ARRASTRAR
+========================================= */
+
+const tarjetas=document.querySelectorAll(".tarjeta");
+
+const zonas=document.querySelectorAll(".zona");
+
+
+tarjetas.forEach(tarjeta=>{
+
+    tarjeta.addEventListener("dragstart",function(){
+
+        arrastrado=this;
+
+        this.classList.add("arrastrando");
+
+    });
+
+    tarjeta.addEventListener("dragend",function(){
+
+        this.classList.remove("arrastrando");
+
+    });
+
+});
+
+
+zonas.forEach(zona=>{
+
+    zona.addEventListener("dragover",function(e){
+
+        e.preventDefault();
+
+        this.classList.add("sobre");
+
+    });
+
+    zona.addEventListener("dragleave",function(){
+
+        this.classList.remove("sobre");
+
+    });
+
+    zona.addEventListener("drop",function(e){
+
+        e.preventDefault();
+
+        this.classList.remove("sobre");
+
+        colocarTarjeta(arrastrado,this);
+
+    });
+
+});
+
+
+/* =========================================
+   COLOCAR TARJETA
+========================================= */
+
+function colocarTarjeta(tarjeta,zona){
+
+    if(!tarjeta) return;
+
+    const id=tarjeta.id;
+
+    const esMonoide=
+        zona.id==="zonaMonoide";
+
+    respuestas[id]=esMonoide;
+
+    /* Sacamos la tarjeta de donde estaba */
+
+    tarjeta.parentElement.removeChild(tarjeta);
+
+
+    /* Creamos mini tarjeta */
+
+    const mini=document.createElement("div");
+
+    mini.className="mini";
+
+    mini.innerHTML=
+        tarjeta.querySelector(".nombre-candidato").innerText;
+
+
+    mini.id="mini"+id;
+
+
+    zona.querySelector(".zona-contenido")
+        .appendChild(mini);
+
+
+    clasificados++;
+
+
+    if(clasificados===3){
+
+        analizarClasificacion();
+
+    }
+
+}
+
+
+/* =========================================
+   ANALIZAR CLASIFICACIÓN
+========================================= */
+
+function analizarClasificacion(){
+
+    const mensaje=document.getElementById("mensajeGeneral");
+
+    const correcta=
+        respuestas["A"]===true &&
+        respuestas["B"]===false &&
+        respuestas["C"]===false;
+
+
+    if(correcta){
+
+        mensaje.className="mensaje correcto";
+
+        mensaje.innerHTML=
+        "🟢 <strong>¡CLASIFICACIÓN CORRECTA!</strong><br><br>"+
+        "Has identificado correctamente las estructuras.<br>"+
+        "Pero todavía necesitas demostrar por qué.";
+
+    }else{
+
+        mensaje.className="mensaje error";
+
+        mensaje.innerHTML=
+        "🔴 <strong>Hay una clasificación incorrecta.</strong><br><br>"+
+        "No te preocupes. El escáner te permitirá revisar "+
+        "las propiedades antes de continuar.";
+
+    }
+
+
+    document.getElementById("justificaciones")
+        .style.display="block";
+
+
+    document.getElementById("justA")
+        .style.display="block";
+
+    document.getElementById("justB")
+        .style.display="block";
+
+    document.getElementById("justC")
+        .style.display="block";
+
+
+    document.getElementById("justificaciones")
+        .scrollIntoView({behavior:"smooth"});
+
+}
+
+
+/* =========================================
+   JUSTIFICACIONES
+========================================= */
+
+function justificar(candidato,correcto){
+
+    if(correcto){
+
+        justificacionesCorrectas++;
+
+
+        event.target.style.background="#116b4a";
+
+        event.target.style.borderColor="#31ffb0";
+
+
+        const botones=
+            event.target.parentElement
+            .querySelectorAll("button");
+
+
+        botones.forEach(b=>{
+            b.disabled=true;
+        });
+
+
+        if(justificacionesCorrectas===3){
+
+            activarReactor();
+
+        }
+
+    }else{
+
+        event.target.style.background="#701d35";
+
+        event.target.style.borderColor="#ff5577";
+
+        setTimeout(()=>{
+
+            event.target.style.background="";
+            event.target.style.borderColor="";
+
+        },800);
+
+    }
+
+}
+
+
+/* =========================================
+   ACTIVAR REACTOR
+========================================= */
+
+function activarReactor(){
+
+    const reactor=
+        document.getElementById("reactor");
+
+
+    reactor.style.display="block";
+
+
+    reactor.scrollIntoView({
+        behavior:"smooth"
+    });
+
+
+    setTimeout(()=>{
+
+        document
+        .getElementById("propInterna")
+        .classList.add("activada");
+
+    },500);
+
+
+    setTimeout(()=>{
+
+        document
+        .getElementById("propNeutro")
+        .classList.add("activada");
+
+    },1100);
+
+
+    setTimeout(()=>{
+
+        document
+        .getElementById("propAsociativa")
+        .classList.add("activada");
+
+    },1700);
+
+
+    setTimeout(()=>{
+
+        document
+        .getElementById("nucleo")
+        .classList.add("activado");
+
+    },2300);
+
+}
+
+</script>
+
+</body>
+</html>

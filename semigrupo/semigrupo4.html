@@ -1,0 +1,2986 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PROJECT AXIOM · Semigrupo</title>
+
+<!-- =====================================================
+     FUENTES
+===================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
+
+<style>
+
+/* =====================================================
+   GENERAL
+===================================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    margin:0;
+
+    padding:20px 10px 70px;
+
+    font-family:'Poppins', sans-serif;
+
+    color:white;
+
+    background:
+        radial-gradient(
+            circle at 50% 15%,
+            #10244d,
+            #050a1c 48%,
+            #02040d 100%
+        );
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+
+/* =====================================================
+   ESTRELLAS
+===================================================== */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    background-image:
+
+        radial-gradient(
+            white 1px,
+            transparent 1px
+        ),
+
+        radial-gradient(
+            #72dfff 1px,
+            transparent 1px
+        );
+
+    background-size:
+        80px 80px,
+        140px 140px;
+
+    background-position:
+        20px 30px,
+        60px 90px;
+
+    opacity:.28;
+
+    z-index:0;
+}
+
+
+/* =====================================================
+   CONTENEDOR
+===================================================== */
+
+.contenedor{
+
+    width:95%;
+
+    max-width:1100px;
+
+    margin:auto;
+
+    position:relative;
+
+    z-index:1;
+}
+
+
+/* =====================================================
+   PANELES
+===================================================== */
+
+.panel{
+
+    background:
+        rgba(
+            6,
+            15,
+            38,
+            .96
+        );
+
+    border:
+        1px solid
+        #294e96;
+
+    border-radius:22px;
+
+    padding:28px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+        0 0 25px
+        rgba(
+            0,
+            120,
+            255,
+            .12
+        );
+}
+
+
+/* =====================================================
+   TIPOGRAFÍAS
+===================================================== */
+
+.titulo,
+h2,
+h3,
+.boton,
+.selector,
+.etiqueta,
+.nucleo,
+.propiedad,
+.estado,
+.arrastrable{
+
+    font-family:'Orbitron', sans-serif;
+
+}
+
+
+/* =====================================================
+   TÍTULOS
+===================================================== */
+
+.titulo{
+
+    text-align:center;
+
+    color:#6ee4ff;
+
+    font-size:28px;
+
+    margin:
+        0
+        0
+        8px;
+
+    letter-spacing:1px;
+
+    text-shadow:
+        0 0 10px #00cfff,
+        0 0 25px #007cff;
+}
+
+
+.subtitulo{
+
+    text-align:center;
+
+    color:#9eb7df;
+
+    font-size:14px;
+
+    margin-bottom:25px;
+
+    font-family:'Orbitron', sans-serif;
+
+    letter-spacing:1px;
+}
+
+
+h2{
+
+    color:#70e3ff;
+
+    text-align:center;
+
+}
+
+
+h3{
+
+    color:#72e3ff;
+
+}
+
+
+/* =====================================================
+   TEXTO
+===================================================== */
+
+.instruccion{
+
+    text-align:center;
+
+    color:#d8e5ff;
+
+    font-size:17px;
+
+    line-height:1.75;
+
+}
+
+
+.resaltado{
+
+    color:#70e4ff;
+
+    font-weight:600;
+}
+
+
+/* =====================================================
+   ETAPA
+===================================================== */
+
+.etapa{
+
+    display:inline-block;
+
+    padding:
+        7px
+        15px;
+
+    border-radius:20px;
+
+    border:
+        1px solid
+        #3278a8;
+
+    background:
+        rgba(
+            0,
+            180,
+            255,
+            .08
+        );
+
+    color:#70e4ff;
+
+    font-family:'Orbitron', sans-serif;
+
+    font-size:11px;
+
+    letter-spacing:1px;
+
+    margin-bottom:15px;
+}
+
+
+/* =====================================================
+   TABLAS
+===================================================== */
+
+.tabla{
+
+    border-collapse:collapse;
+
+    margin:
+        25px
+        auto;
+
+    font-family:'Orbitron', sans-serif;
+
+    font-size:18px;
+}
+
+
+.tabla th,
+.tabla td{
+
+    width:65px;
+
+    height:58px;
+
+    border:
+        1px solid
+        #4869a7;
+
+    text-align:center;
+}
+
+
+.tabla th{
+
+    background:#152d61;
+
+    color:#79e6ff;
+}
+
+
+.tabla td{
+
+    background:#07132d;
+
+    color:white;
+
+    transition:.2s;
+}
+
+
+.tabla td:hover{
+
+    background:#173266;
+
+}
+
+
+/* =====================================================
+   TABLAS PEQUEÑAS
+===================================================== */
+
+.tabla-mini{
+
+    border-collapse:collapse;
+
+    margin:15px auto;
+
+    font-family:'Orbitron', sans-serif;
+
+    font-size:14px;
+}
+
+
+.tabla-mini th,
+.tabla-mini td{
+
+    width:42px;
+
+    height:38px;
+
+    border:
+        1px solid
+        #405e98;
+
+    text-align:center;
+}
+
+
+.tabla-mini th{
+
+    background:#152d61;
+
+    color:#72e2ff;
+}
+
+
+.tabla-mini td{
+
+    background:#07132d;
+}
+
+
+/* =====================================================
+   ARRASTRAR
+===================================================== */
+
+.arrastre{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:35px;
+
+    margin-top:30px;
+}
+
+
+.zona{
+
+    width:300px;
+
+    min-height:130px;
+
+    padding:20px;
+
+    border:
+        2px dashed
+        #35578f;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    transition:.3s;
+}
+
+
+.zona:hover{
+
+    border-color:#6ee4ff;
+
+    background:
+        rgba(
+            0,
+            150,
+            255,
+            .05
+        );
+}
+
+
+.zona.correcta{
+
+    border-color:#2cffad;
+
+    background:
+        rgba(
+            0,
+            255,
+            160,
+            .08
+        );
+
+}
+
+
+.zona.incorrecta{
+
+    border-color:#ff5275;
+
+    background:
+        rgba(
+            255,
+            50,
+            80,
+            .08
+        );
+
+}
+
+
+.tarjetas{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+    margin:25px 0;
+}
+
+
+.arrastrable{
+
+    padding:
+        14px
+        20px;
+
+    border-radius:12px;
+
+    background:#132653;
+
+    border:
+        1px solid
+        #4569a7;
+
+    color:white;
+
+    cursor:grab;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}
+
+
+.arrastrable:active{
+
+    cursor:grabbing;
+
+}
+
+
+/* =====================================================
+   BOTONES
+===================================================== */
+
+.boton{
+
+    display:block;
+
+    margin:
+        20px
+        auto;
+
+    padding:
+        14px
+        27px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1673c9,
+            #14a7d8
+        );
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+
+.boton:hover{
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 0 22px
+        rgba(
+            0,
+            200,
+            255,
+            .45
+        );
+}
+
+
+/* =====================================================
+   MENSAJES
+===================================================== */
+
+.mensaje{
+
+    display:none;
+
+    padding:18px;
+
+    border-radius:15px;
+
+    margin-top:20px;
+
+    text-align:center;
+
+    line-height:1.7;
+
+    font-size:15px;
+}
+
+
+.correcto{
+
+    display:block;
+
+    color:#69ffd0;
+
+    border:
+        1px solid
+        #2cffad;
+
+    background:
+        rgba(
+            0,
+            255,
+            160,
+            .07
+        );
+}
+
+
+.error{
+
+    display:block;
+
+    color:#ff829a;
+
+    border:
+        1px solid
+        #ff5275;
+
+    background:
+        rgba(
+            255,
+            50,
+            80,
+            .07
+        );
+}
+
+
+.info{
+
+    display:block;
+
+    color:#75dfff;
+
+    border:
+        1px solid
+        #327aa2;
+
+    background:
+        rgba(
+            0,
+            180,
+            255,
+            .06
+        );
+}
+
+
+/* =====================================================
+   SELECTORES
+===================================================== */
+
+.selectores{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:22px;
+
+    margin:30px 0;
+}
+
+
+.selector{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#bcd0ef;
+
+    font-size:12px;
+
+    font-weight:600;
+}
+
+
+.selector select{
+
+    width:95px;
+
+    padding:12px;
+
+    border-radius:11px;
+
+    border:
+        1px solid
+        #4164a4;
+
+    background:#0b1735;
+
+    color:white;
+
+    font-family:'Orbitron', sans-serif;
+
+    font-size:18px;
+
+    text-align:center;
+
+    cursor:pointer;
+}
+
+
+/* =====================================================
+   CAMINOS
+===================================================== */
+
+.caminos{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:20px;
+
+    margin-top:25px;
+}
+
+
+.camino{
+
+    width:400px;
+
+    background:#081532;
+
+    border:
+        1px solid
+        #304f8d;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    text-align:center;
+}
+
+
+.expresion{
+
+    font-family:'Orbitron', sans-serif;
+
+    font-size:20px;
+
+    color:#f0f6ff;
+
+    margin:15px 0;
+}
+
+
+.resultado{
+
+    font-family:'Orbitron', sans-serif;
+
+    font-size:30px;
+
+    color:#70e4ff;
+
+    min-height:42px;
+}
+
+
+.detalle{
+
+    color:#91a8cc;
+
+    font-size:13px;
+
+    min-height:22px;
+}
+
+
+/* =====================================================
+   PISTAS
+===================================================== */
+
+.pistas{
+
+    text-align:center;
+
+    margin-top:20px;
+}
+
+
+.pista{
+
+    display:none;
+
+    color:#ffd76a;
+
+    font-size:14px;
+
+    padding:12px;
+
+    border:
+        1px solid
+        #806b2c;
+
+    border-radius:10px;
+
+    background:
+        rgba(
+            255,
+            200,
+            50,
+            .06
+        );
+
+    margin-top:10px;
+}
+
+
+/* =====================================================
+   DESAFÍO FINAL
+===================================================== */
+
+#desafioFinal{
+
+    display:none;
+}
+
+
+.candidatos{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:22px;
+
+    margin-top:25px;
+}
+
+
+.candidato{
+
+    width:300px;
+
+    padding:18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0c1b40,
+            #071027
+        );
+
+    border:
+        1px solid
+        #345da5;
+
+    border-radius:18px;
+}
+
+
+.candidato h3{
+
+    text-align:center;
+
+    margin-top:0;
+}
+
+
+.candidato button{
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:11px;
+
+    border-radius:10px;
+
+    border:
+        1px solid
+        #4569a7;
+
+    background:#132653;
+
+    color:white;
+
+    font-family:'Orbitron', sans-serif;
+
+    font-size:11px;
+
+    cursor:pointer;
+}
+
+
+.candidato button:hover{
+
+    background:#244589;
+}
+
+
+.candidato button.correcta{
+
+    background:#106847;
+
+    border-color:#32ffb0;
+}
+
+
+.candidato button.incorrecta{
+
+    background:#711e37;
+
+    border-color:#ff5277;
+}
+
+
+/* =====================================================
+   REACTOR
+===================================================== */
+
+#reactor{
+
+    display:none;
+}
+
+
+.reactor{
+
+    text-align:center;
+}
+
+
+.nucleo{
+
+    width:155px;
+
+    height:155px;
+
+    margin:
+        30px
+        auto;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:55px;
+
+    background:#050c21;
+
+    border:
+        4px solid
+        #31466e;
+
+    transition:1s;
+}
+
+
+.nucleo.activado{
+
+    border-color:#62ffff;
+
+    background:#064052;
+
+    box-shadow:
+
+        0 0 20px #00eaff,
+
+        0 0 50px #00c4ff,
+
+        0 0 100px #008cff;
+
+    animation:
+        pulso 1s infinite alternate;
+}
+
+
+@keyframes pulso{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.09);
+    }
+
+}
+
+
+.propiedades{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+}
+
+
+.propiedad{
+
+    display:inline-block;
+
+    padding:
+        12px
+        20px;
+
+    border-radius:12px;
+
+    background:#101b38;
+
+    border:
+        1px solid
+        #30456f;
+
+    color:#687795;
+
+    transition:.7s;
+
+    font-size:12px;
+}
+
+
+.propiedad.activada{
+
+    color:#6affce;
+
+    border-color:#2cffad;
+
+    box-shadow:
+        0 0 15px
+        rgba(
+            40,
+            255,
+            170,
+            .35
+        );
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:700px){
+
+    .titulo{
+
+        font-size:21px;
+
+    }
+
+    .panel{
+
+        padding:20px 14px;
+
+    }
+
+    .instruccion{
+
+        font-size:15px;
+
+    }
+
+    .tabla{
+
+        font-size:15px;
+
+    }
+
+    .tabla th,
+    .tabla td{
+
+        width:48px;
+
+        height:48px;
+
+    }
+
+    .camino{
+
+        width:100%;
+
+    }
+
+    .zona{
+
+        width:100%;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+<!-- =====================================================
+     INTRODUCCIÓN
+===================================================== -->
+
+<div class="panel">
+
+
+<div class="etapa">
+
+🪐 PLANETA SEMIGRUPO · MISIÓN 01
+
+</div>
+
+
+<h1 class="titulo">
+
+⚡ DETECTAR LA ESTRUCTURA
+
+</h1>
+
+
+<p class="instruccion">
+
+El planeta contiene una estructura algebraica
+que todavía no ha podido ser identificada.
+
+</p>
+
+
+<p class="instruccion">
+
+Tu misión es descubrir qué propiedades debe cumplir
+una operación para que pueda convertirse en un
+<strong>SEMIGRUPO</strong>.
+
+</p>
+
+
+<p class="instruccion resaltado">
+
+Primero tendrás que comprobar si la operación
+permanece dentro del conjunto.
+
+</p>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     ACTIVIDAD 1
+     COMPOSICIÓN INTERNA
+===================================================== -->
+
+<div class="panel">
+
+
+<div class="etapa">
+
+NÚCLEO 01 · COMPOSICIÓN INTERNA
+
+</div>
+
+
+<h2>
+
+🔬 PRUEBA DE CONTENCIÓN
+
+</h2>
+
+
+<p class="instruccion">
+
+El escáner ha encontrado tres estructuras.
+
+</p>
+
+
+<p class="instruccion">
+
+Arrastrá cada tarjeta hacia
+<strong>COMPOSICIÓN INTERNA</strong>
+o
+<strong>NO ES COMPOSICIÓN INTERNA</strong>.
+
+</p>
+
+
+<!-- =====================================================
+     TARJETAS
+===================================================== -->
+
+<div class="tarjetas">
+
+
+<div
+class="arrastrable"
+draggable="true"
+id="caso1"
+>
+
+🔵 ICONOS
+
+</div>
+
+
+<div
+class="arrastrable"
+draggable="true"
+id="caso2"
+>
+
+🍎 FRUTAS
+
+</div>
+
+
+<div
+class="arrastrable"
+draggable="true"
+id="caso3"
+>
+
+➗ ENTEROS / DIVISIÓN
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     ZONAS
+===================================================== -->
+
+<div class="arrastre">
+
+
+<div
+class="zona"
+id="zonaInterna"
+>
+
+<h3>
+
+🟢 COMPOSICIÓN INTERNA
+
+</h3>
+
+<p>
+
+El resultado siempre pertenece
+al conjunto.
+
+</p>
+
+</div>
+
+
+<div
+class="zona"
+id="zonaNoInterna"
+>
+
+<h3>
+
+🔴 NO ES COMPOSICIÓN INTERNA
+
+</h3>
+
+<p>
+
+Existe algún resultado
+que sale del conjunto.
+
+</p>
+
+</div>
+
+
+</div>
+
+
+<div
+id="mensajeInterna"
+class="mensaje"
+>
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     TABLAS PARA RAZONAR
+===================================================== -->
+
+<div class="panel">
+
+
+<h2>
+
+🧩 COMPROBALO EN LAS TABLAS
+
+</h2>
+
+
+<p class="instruccion">
+
+Ahora observá las tablas de Cayley.
+
+Buscá si aparece algún resultado que
+<strong>no pertenezca al conjunto</strong>.
+
+</p>
+
+
+<h3 style="text-align:center;">
+
+🍎 ESTRUCTURA DE ICONOS
+
+</h3>
+
+
+<table class="tabla-mini">
+
+
+<tr>
+
+<th>★</th>
+<th>🍎</th>
+<th>🍐</th>
+<th>🍊</th>
+
+</tr>
+
+
+<tr>
+
+<th>🍎</th>
+<td>🍎</td>
+<td>🍐</td>
+<td>🍊</td>
+
+</tr>
+
+
+<tr>
+
+<th>🍐</th>
+<td>🍐</td>
+<td>🍊</td>
+<td>🍎</td>
+
+</tr>
+
+
+<tr>
+
+<th>🍊</th>
+<td>🍊</td>
+<td>🍎</td>
+<td>🍐</td>
+
+</tr>
+
+
+</table>
+
+
+<h3 style="text-align:center;">
+
+➗ ENTEROS / DIVISIÓN
+
+</h3>
+
+
+<table class="tabla-mini">
+
+
+<tr>
+
+<th>÷</th>
+<th>1</th>
+<th>2</th>
+<th>4</th>
+
+</tr>
+
+
+<tr>
+
+<th>1</th>
+<td>1</td>
+<td>1/2</td>
+<td>1/4</td>
+
+</tr>
+
+
+<tr>
+
+<th>2</th>
+<td>2</td>
+<td>1</td>
+<td>1/2</td>
+
+</tr>
+
+
+<tr>
+
+<th>4</th>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+
+</tr>
+
+
+</table>
+
+
+<p class="instruccion">
+
+💡 Recordá:
+
+si aparece <strong>1/2</strong> o <strong>1/4</strong>,
+esos resultados ya no pertenecen al conjunto
+{1, 2, 4}.
+
+</p>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     ACTIVIDAD 2
+     ASOCIATIVIDAD
+===================================================== -->
+
+<div class="panel">
+
+
+<div class="etapa">
+
+NÚCLEO 02 · ASOCIATIVIDAD
+
+</div>
+
+
+<h2>
+
+🛰️ ESCÁNER DE ASOCIATIVIDAD
+
+</h2>
+
+
+<p class="instruccion">
+
+La operación permanece dentro del conjunto.
+
+Pero todavía falta comprobar algo.
+
+</p>
+
+
+<p class="instruccion">
+
+¿Importa cómo agrupamos los elementos?
+
+</p>
+
+
+<p class="instruccion">
+
+Elegí tres elementos y compará:
+
+</p>
+
+
+<p
+style="
+text-align:center;
+font-family:'Orbitron',sans-serif;
+font-size:20px;
+color:#70e4ff;
+"
+>
+
+(a * b) * c
+
+&nbsp;&nbsp; VS &nbsp;&nbsp;
+
+a * (b * c)
+
+</p>
+
+
+<p class="instruccion">
+
+Podés probar todas las combinaciones que quieras.
+
+</p>
+
+
+<!-- =====================================================
+     TABLA ASOCIATIVA
+===================================================== -->
+
+<table class="tabla">
+
+
+<tr>
+
+<th>*</th>
+
+<th>A</th>
+
+<th>B</th>
+
+<th>C</th>
+
+</tr>
+
+
+<tr>
+
+<th>A</th>
+
+<td>A</td>
+
+<td>B</td>
+
+<td>C</td>
+
+</tr>
+
+
+<tr>
+
+<th>B</th>
+
+<td>B</td>
+
+<td>C</td>
+
+<td>A</td>
+
+</tr>
+
+
+<tr>
+
+<th>C</th>
+
+<td>C</td>
+
+<td>A</td>
+
+<td>B</td>
+
+</tr>
+
+
+</table>
+
+
+<!-- =====================================================
+     SELECTORES
+===================================================== -->
+
+<div class="selectores">
+
+
+<div class="selector">
+
+ELEMENTO A
+
+<select id="a">
+
+<option value="A">A</option>
+
+<option value="B">B</option>
+
+<option value="C">C</option>
+
+</select>
+
+</div>
+
+
+<div class="selector">
+
+ELEMENTO B
+
+<select id="b">
+
+<option value="A">A</option>
+
+<option value="B">B</option>
+
+<option value="C">C</option>
+
+</select>
+
+</div>
+
+
+<div class="selector">
+
+ELEMENTO C
+
+<select id="c">
+
+<option value="A">A</option>
+
+<option value="B">B</option>
+
+<option value="C">C</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+
+<button
+class="boton"
+onclick="probarAsociatividad()"
+>
+
+⚡ PROBAR COMBINACIÓN
+
+</button>
+
+
+<!-- =====================================================
+     CAMINOS
+===================================================== -->
+
+<div class="caminos">
+
+
+<div class="camino">
+
+
+<h3>
+
+🟦 CAMINO 1
+
+</h3>
+
+
+<div class="expresion">
+
+(a * b) * c
+
+</div>
+
+
+<div
+id="resultado1"
+class="resultado"
+>
+
+?
+
+</div>
+
+
+<div
+id="detalle1"
+class="detalle"
+>
+
+Esperando análisis...
+
+</div>
+
+
+</div>
+
+
+
+<div class="camino">
+
+
+<h3>
+
+🟪 CAMINO 2
+
+</h3>
+
+
+<div class="expresion">
+
+a * (b * c)
+
+</div>
+
+
+<div
+id="resultado2"
+class="resultado"
+>
+
+?
+
+</div>
+
+
+<div
+id="detalle2"
+class="detalle"
+>
+
+Esperando análisis...
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div
+id="mensajeAsociativa"
+class="mensaje"
+>
+</div>
+
+
+<div class="contador"
+style="
+text-align:center;
+font-family:'Orbitron',sans-serif;
+font-size:12px;
+color:#7188ae;
+margin-top:15px;
+">
+
+INTENTOS:
+
+<span id="intentos">
+
+0
+
+</span>
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     DESAFÍO FINAL
+===================================================== -->
+
+<div
+class="panel"
+id="desafioFinal"
+>
+
+
+<div class="etapa">
+
+DESAFÍO FINAL · ESCÁNER AXIOM
+
+</div>
+
+
+<h2>
+
+🧠 ¿CUÁL ES UN SEMIGRUPO?
+
+</h2>
+
+
+<p class="instruccion">
+
+Ya descubriste dos propiedades.
+
+Ahora utilizalas para identificar la estructura correcta.
+
+</p>
+
+
+<p class="instruccion">
+
+Recordá:
+
+<br><br>
+
+🟢 Composición interna
+
+<br>
+
+🟢 Asociatividad
+
+</p>
+
+
+<div class="candidatos">
+
+
+<!-- =====================================================
+     CANDIDATO A
+===================================================== -->
+
+<div class="candidato">
+
+
+<h3>
+
+🟢 ESTRUCTURA A
+
+</h3>
+
+
+<table class="tabla-mini">
+
+
+<tr>
+
+<th>*</th>
+
+<th>A</th>
+
+<th>B</th>
+
+<th>C</th>
+
+</tr>
+
+
+<tr>
+
+<th>A</th>
+
+<td>A</td>
+
+<td>B</td>
+
+<td>C</td>
+
+</tr>
+
+
+<tr>
+
+<th>B</th>
+
+<td>B</td>
+
+<td>C</td>
+
+<td>A</td>
+
+</tr>
+
+
+<tr>
+
+<th>C</th>
+
+<td>C</td>
+
+<td>A</td>
+
+<td>B</td>
+
+</tr>
+
+
+</table>
+
+
+<button
+onclick="elegirSemigrupo(true,this)"
+>
+
+ES SEMIGRUPO
+
+</button>
+
+
+<button
+onclick="elegirSemigrupo(false,this)"
+>
+
+NO ES SEMIGRUPO
+
+</button>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     CANDIDATO B
+===================================================== -->
+
+<div class="candidato">
+
+
+<h3>
+
+🔴 ESTRUCTURA B
+
+</h3>
+
+
+<table class="tabla-mini">
+
+
+<tr>
+
+<th>*</th>
+
+<th>A</th>
+
+<th>B</th>
+
+<th>C</th>
+
+</tr>
+
+
+<tr>
+
+<th>A</th>
+
+<td>A</td>
+
+<td>B</td>
+
+<td>⭐</td>
+
+</tr>
+
+
+<tr>
+
+<th>B</th>
+
+<td>B</td>
+
+<td>C</td>
+
+<td>A</td>
+
+</tr>
+
+
+<tr>
+
+<th>C</th>
+
+<td>⭐</td>
+
+<td>A</td>
+
+<td>B</td>
+
+</tr>
+
+
+</table>
+
+
+<button
+onclick="elegirSemigrupo(false,this)"
+>
+
+ES SEMIGRUPO
+
+</button>
+
+
+<button
+onclick="elegirSemigrupo(true,this)"
+>
+
+NO ES SEMIGRUPO
+
+</button>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     CANDIDATO C
+===================================================== -->
+
+<div class="candidato">
+
+
+<h3>
+
+🔴 ESTRUCTURA C
+
+</h3>
+
+
+<table class="tabla-mini">
+
+
+<tr>
+
+<th>*</th>
+
+<th>A</th>
+
+<th>B</th>
+
+<th>C</th>
+
+</tr>
+
+
+<tr>
+
+<th>A</th>
+
+<td>A</td>
+
+<td>B</td>
+
+<td>C</td>
+
+</tr>
+
+
+<tr>
+
+<th>B</th>
+
+<td>B</td>
+
+<td>A</td>
+
+<td>A</td>
+
+</tr>
+
+
+<tr>
+
+<th>C</th>
+
+<td>C</td>
+
+<td>A</td>
+
+<td>B</td>
+
+</tr>
+
+
+</table>
+
+
+<button
+onclick="elegirSemigrupo(false,this)"
+>
+
+ES SEMIGRUPO
+
+</button>
+
+
+<button
+onclick="elegirSemigrupo(true,this)"
+>
+
+NO ES SEMIGRUPO
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+<div
+id="mensajeFinal"
+class="mensaje"
+>
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     REACTOR AXIOM
+===================================================== -->
+
+<div
+class="panel"
+id="reactor"
+>
+
+
+<div class="reactor">
+
+
+<h2>
+
+⚡ REACTOR AXIOM ⚡
+
+</h2>
+
+
+<div
+class="nucleo"
+id="nucleo"
+>
+
+⚡
+
+</div>
+
+
+<div class="propiedades">
+
+
+<span
+class="propiedad"
+id="propiedadInterna"
+>
+
+🔷 COMPOSICIÓN INTERNA
+
+</span>
+
+
+<span
+class="propiedad"
+id="propiedadAsociativa"
+>
+
+🔷 ASOCIATIVIDAD
+
+</span>
+
+
+</div>
+
+
+<h2>
+
+🌟 ¡SEMIGRUPO DESBLOQUEADO!
+
+</h2>
+
+
+<p class="instruccion">
+
+Has descubierto las dos propiedades
+fundamentales necesarias para reconocer
+un semigrupo.
+
+</p>
+
+
+<p
+style="
+font-family:'Orbitron',sans-serif;
+font-size:20px;
+color:#6affce;
+font-weight:bold;
+"
+>
+
+COMPOSICIÓN INTERNA + ASOCIATIVIDAD
+
+</p>
+
+
+<p class="instruccion">
+
+El planeta ha sido estabilizado.
+
+</p>
+
+
+<p
+style="
+font-family:'Orbitron',sans-serif;
+color:#70e4ff;
+font-size:19px;
+font-weight:bold;
+"
+>
+
+🪐 SEMIGRUPO · DESBLOQUEADO
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   ACTIVIDAD 1 · ARRASTRAR
+===================================================== */
+
+let respuestasArrastre = {
+
+    caso1:false,
+
+    caso2:false,
+
+    caso3:false
+
+};
+
+
+/*
+   caso1 = interna
+   caso2 = interna
+   caso3 = NO interna
+*/
+
+
+const tarjetas =
+document.querySelectorAll(
+    ".arrastrable"
+);
+
+
+const zonas =
+document.querySelectorAll(
+    ".zona"
+);
+
+
+tarjetas.forEach(
+    tarjeta => {
+
+        tarjeta.addEventListener(
+            "dragstart",
+            e => {
+
+                e.dataTransfer.setData(
+                    "text",
+                    tarjeta.id
+                );
+
+            }
+        );
+
+    }
+);
+
+
+zonas.forEach(
+    zona => {
+
+        zona.addEventListener(
+            "dragover",
+            e => {
+
+                e.preventDefault();
+
+            }
+        );
+
+
+        zona.addEventListener(
+            "drop",
+            e => {
+
+                e.preventDefault();
+
+
+                const id =
+                    e.dataTransfer.getData(
+                        "text"
+                    );
+
+
+                const tarjeta =
+                    document.getElementById(
+                        id
+                    );
+
+
+                zona.appendChild(
+                    tarjeta
+                );
+
+
+                comprobarArrastre();
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   COMPROBAR ARRASTRE
+===================================================== */
+
+function comprobarArrastre(){
+
+    const interna =
+        document.getElementById(
+            "zonaInterna"
+        );
+
+
+    const noInterna =
+        document.getElementById(
+            "zonaNoInterna"
+        );
+
+
+    /*
+       Comprobar posición
+    */
+
+    respuestasArrastre.caso1 =
+        interna.contains(
+            document.getElementById(
+                "caso1"
+            )
+        );
+
+
+    respuestasArrastre.caso2 =
+        interna.contains(
+            document.getElementById(
+                "caso2"
+            )
+        );
+
+
+    respuestasArrastre.caso3 =
+        noInterna.contains(
+            document.getElementById(
+                "caso3"
+            )
+        );
+
+
+    const mensaje =
+        document.getElementById(
+            "mensajeInterna"
+        );
+
+
+    const total =
+        Object.values(
+            respuestasArrastre
+        )
+        .filter(
+            x => x === true
+        )
+        .length;
+
+
+    if(total === 3){
+
+        mensaje.className =
+            "mensaje correcto";
+
+
+        mensaje.innerHTML =
+
+        "🟢 <strong>¡PRUEBA SUPERADA!</strong><br><br>" +
+
+        "Descubriste que una operación es de " +
+
+        "<strong>composición interna</strong> cuando " +
+
+        "todos sus resultados permanecen dentro " +
+
+        "del conjunto.";
+
+
+        document
+        .getElementById(
+            "zonaInterna"
+        )
+        .classList.add(
+            "correcta"
+        );
+
+
+        document
+        .getElementById(
+            "zonaNoInterna"
+        )
+        .classList.add(
+            "correcta"
+        );
+
+    }
+
+    else if(
+        total > 0
+    ){
+
+        mensaje.className =
+            "mensaje info";
+
+
+        mensaje.innerHTML =
+
+        "🔵 Vas por buen camino.<br><br>" +
+
+        "Observá qué resultados aparecen " +
+
+        "en cada tabla y comprobá si todos " +
+
+        "pertenecen al conjunto.";
+
+    }
+
+}
+
+
+/* =====================================================
+   TABLA ASOCIATIVA
+===================================================== */
+
+const tablaAsociativa = {
+
+    A:{
+        A:"A",
+        B:"B",
+        C:"C"
+    },
+
+    B:{
+        A:"B",
+        B:"C",
+        C:"A"
+    },
+
+    C:{
+        A:"C",
+        B:"A",
+        C:"B"
+    }
+
+};
+
+
+/* =====================================================
+   PROBAR ASOCIATIVIDAD
+===================================================== */
+
+let intentos = 0;
+
+
+function operar(
+    x,
+    y
+){
+
+    return tablaAsociativa[x][y];
+
+}
+
+
+function probarAsociatividad(){
+
+    const a =
+        document.getElementById(
+            "a"
+        ).value;
+
+
+    const b =
+        document.getElementById(
+            "b"
+        ).value;
+
+
+    const c =
+        document.getElementById(
+            "c"
+        ).value;
+
+
+    intentos++;
+
+
+    document.getElementById(
+        "intentos"
+    ).innerText =
+        intentos;
+
+
+    /*
+       CAMINO 1
+       (a*b)*c
+    */
+
+    const ab =
+        operar(
+            a,
+            b
+        );
+
+
+    const izquierda =
+        operar(
+            ab,
+            c
+        );
+
+
+    /*
+       CAMINO 2
+       a*(b*c)
+    */
+
+    const bc =
+        operar(
+            b,
+            c
+        );
+
+
+    const derecha =
+        operar(
+            a,
+            bc
+        );
+
+
+    document.getElementById(
+        "resultado1"
+    ).innerText =
+        izquierda;
+
+
+    document.getElementById(
+        "resultado2"
+    ).innerText =
+        derecha;
+
+
+    document.getElementById(
+        "detalle1"
+    ).innerText =
+
+        "(" +
+        a +
+        " * " +
+        b +
+        ") = " +
+        ab;
+
+
+    document.getElementById(
+        "detalle2"
+    ).innerText =
+
+        "(" +
+        b +
+        " * " +
+        c +
+        ") = " +
+        bc;
+
+
+    const mensaje =
+        document.getElementById(
+            "mensajeAsociativa"
+        );
+
+
+    /*
+       En esta tabla siempre coincidirán.
+       El objetivo es que el alumno descubra
+       la propiedad.
+    */
+
+    if(
+        izquierda === derecha
+    ){
+
+        mensaje.className =
+            "mensaje correcto";
+
+
+        mensaje.innerHTML =
+
+        "🟢 <strong>LOS DOS CAMINOS COINCIDEN</strong><br><br>" +
+
+        "(" +
+        a +
+        " * " +
+        b +
+        ") * " +
+        c +
+
+        " = " +
+
+        a +
+        " * (" +
+        b +
+        " * " +
+        c +
+        ")" +
+
+        "<br><br>" +
+
+        "Probá otras combinaciones para comprobar " +
+
+        "si este comportamiento se mantiene.";
+
+    }
+
+    else{
+
+        mensaje.className =
+            "mensaje error";
+
+
+        mensaje.innerHTML =
+
+        "🔴 Los resultados son diferentes.<br><br>" +
+
+        "La operación no sería asociativa.";
+
+    }
+
+
+    /*
+       Después de varias pruebas,
+       permitir continuar.
+    */
+
+    if(
+        intentos >= 4
+    ){
+
+        mostrarDesafioFinal();
+
+    }
+
+}
+
+
+/* =====================================================
+   MOSTRAR DESAFÍO FINAL
+===================================================== */
+
+function mostrarDesafioFinal(){
+
+    const desafio =
+        document.getElementById(
+            "desafioFinal"
+        );
+
+
+    if(
+        desafio.style.display !==
+        "block"
+    ){
+
+        desafio.style.display =
+            "block";
+
+
+        setTimeout(
+
+            () => {
+
+                desafio.scrollIntoView({
+                    behavior:"smooth"
+                });
+
+            },
+
+            400
+
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   DESAFÍO FINAL
+===================================================== */
+
+let respondidosFinal = 0;
+
+let aciertosFinal = 0;
+
+
+function elegirSemigrupo(
+    correcta,
+    boton
+){
+
+    /*
+       Evitar repetir
+    */
+
+    if(
+        boton.parentElement.dataset.respondido
+    ){
+
+        return;
+
+    }
+
+
+    boton.parentElement.dataset.respondido =
+        "true";
+
+
+    respondidosFinal++;
+
+
+    const botones =
+        boton.parentElement
+        .querySelectorAll(
+            "button"
+        );
+
+
+    botones.forEach(
+        b => b.disabled = true
+    );
+
+
+    if(correcta){
+
+        boton.classList.add(
+            "correcta"
+        );
+
+        aciertosFinal++;
+
+    }
+
+    else{
+
+        boton.classList.add(
+            "incorrecta"
+        );
+
+    }
+
+
+    if(
+        respondidosFinal === 3
+    ){
+
+        mostrarResultadoFinal();
+
+    }
+
+}
+
+
+/* =====================================================
+   RESULTADO FINAL
+===================================================== */
+
+function mostrarResultadoFinal(){
+
+    const mensaje =
+        document.getElementById(
+            "mensajeFinal"
+        );
+
+
+    if(
+        aciertosFinal === 3
+    ){
+
+        mensaje.className =
+            "mensaje correcto";
+
+
+        mensaje.innerHTML =
+
+        "🟢 <strong>¡ESCÁNER COMPLETADO!</strong><br><br>" +
+
+        "Has identificado correctamente " +
+
+        "las tres estructuras.<br><br>" +
+
+        "Para ser semigrupo, una estructura debe " +
+
+        "tener <strong>composición interna y asociatividad</strong>.";
+
+
+        activarReactor();
+
+    }
+
+    else{
+
+        mensaje.className =
+            "mensaje error";
+
+
+        mensaje.innerHTML =
+
+        "🔴 <strong>EL ESCÁNER DETECTÓ ERRORES</strong><br><br>" +
+
+        "Volvé a observar las tablas.<br><br>" +
+
+        "Preguntate:<br><br>" +
+
+        "¿Todos los resultados pertenecen al conjunto?" +
+
+        "<br>" +
+
+        "¿Los dos agrupamientos producen siempre " +
+
+        "el mismo resultado?";
+
+    }
+
+}
+
+
+/* =====================================================
+   REACTOR AXIOM
+===================================================== */
+
+function activarReactor(){
+
+    const reactor =
+        document.getElementById(
+            "reactor"
+        );
+
+
+    reactor.style.display =
+        "block";
+
+
+    setTimeout(
+
+        () => {
+
+            reactor.scrollIntoView({
+                behavior:"smooth"
+            });
+
+        },
+
+        300
+
+    );
+
+
+    setTimeout(
+
+        () => {
+
+            document
+            .getElementById(
+                "propiedadInterna"
+            )
+            .classList.add(
+                "activada"
+            );
+
+        },
+
+        600
+
+    );
+
+
+    setTimeout(
+
+        () => {
+
+            document
+            .getElementById(
+                "propiedadAsociativa"
+            )
+            .classList.add(
+                "activada"
+            );
+
+        },
+
+        1000
+
+    );
+
+
+    setTimeout(
+
+        () => {
+
+            document
+            .getElementById(
+                "nucleo"
+            )
+            .classList.add(
+                "activado"
+            );
+
+        },
+
+        1400
+
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
