@@ -1,0 +1,207 @@
+body{
+
+margin:0;
+background:#08101f;
+font-family:Poppins;
+overflow:hidden;
+color:white;
+
+}
+
+#fondo{
+
+position:absolute;
+width:100%;
+height:100%;
+
+background:
+radial-gradient(circle at center,#16325f 0,#08101f 70%);
+
+}
+
+h1{
+    position: relative;
+    z-index: 10;
+
+    color: #00d9ff;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 40px;
+    margin-left: 30px;
+}
+
+h2 {
+    position: relative;
+    z-index: 10;
+    color: #8d6bff;
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+     margin-left: 70px;
+}
+
+#mapa{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:left;
+margin-left: 450px;
+
+gap:5px;
+
+position:relative;
+
+z-index:5;
+
+}
+/* anule el estilo linea 
+.linea{
+
+width:25px;
+
+height:5px;
+
+background:#00d9ff;
+
+box-shadow:0 0 15px cyan;
+
+} */
+
+.nivel{
+
+display:flex;
+
+align-items:center;
+
+gap:20px;
+
+cursor:pointer;
+
+transition:.4s;
+
+}
+
+.circulo{
+
+width:50px;
+
+height:50px;
+
+border-radius:50%;
+
+}
+
+
+.activo .circulo{
+
+background:#00ff99;
+
+box-shadow:0 0 30px #00ff99;
+
+animation:pulsar 1.5s infinite;
+
+}
+
+.bloqueado .circulo{
+
+background:#444;
+
+}
+
+.nivel p{
+
+font-size:22px;
+
+letter-spacing:2px;
+
+}
+
+.bloqueado{
+
+opacity:.4;
+
+pointer-events:none;
+
+}
+
+@keyframes pulsar{
+
+50%{
+
+transform:scale(1.2);
+
+}
+
+}
+.panel-propiedades {
+    position: absolute;
+
+    top: 200px;
+    right: 250px;
+
+    width: 350px;
+    height: 500px;
+
+    background-color: #071426;
+
+    border: 2px solid #243b5a;
+    border-radius: 8px;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+}
+.panel-propiedades h3 {
+    color: #00d9ff;
+
+    font-family: 'Orbitron', sans-serif;
+
+    font-size: 16px;
+
+    text-align: center;
+
+    margin: 0;
+}
+.propiedad {
+    display: grid;
+
+    grid-template-columns: 25px 1fr;
+
+    align-items: center;
+
+    margin-top: 25px;
+}
+.nombre {
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+.recuperada {
+    color: white;
+}
+.recuperada .estado {
+    color: #00d85a;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+.bloqueada {
+    color: #71819b;
+}
+
+.bloqueada .estado {
+    color: #71819b;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+.nivel {
+    text-decoration: none;
+    color: inherit;
+}

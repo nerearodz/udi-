@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PROJECT AXIOM - Entrenamiento LCI</title>
+
+    <!-- FUENTES AXIOM -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           UNIVERSO
+        ========================================= */
+
+        #universo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            background: #000;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(0,217,255,0.04),
+                    rgba(0,0,0,0.85)
+                );
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* =========================================
+           SECCIONES
+        ========================================= */
+
+        section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+
+        /* =========================================
+           TERMINAL AXIOM
+        ========================================= */
+
+        .terminal {
+            width: 1200px;
+            max-width: 95vw;
+            padding: 45px;
+            background: rgba(5, 10, 20, 0.94);
+
+            border: 1px solid #00d9ff;
+            border-radius: 15px;
+
+            box-shadow:
+                0 0 15px rgba(0,217,255,0.4),
+                0 0 50px rgba(141,107,255,0.15),
+                inset 0 0 30px rgba(0,217,255,0.05);
+
+            backdrop-filter: blur(8px);
+        }
+
+        /* =========================================
+           TITULOS
+        ========================================= */
+
+        h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00d9ff;
+            letter-spacing: 2px;
+            text-shadow:
+                0 0 8px #00d9ff,
+                0 0 20px rgba(0,217,255,0.5);
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #ffffff;
+            text-shadow:
+                0 0 10px rgba(255,255,255,0.3);
+        }
+
+        p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #dbeafe;
+        }
+
+        strong {
+            color: #00d9ff;
+        }
+
+        /* =========================================
+           FORMULA
+        ========================================= */
+
+        .formula {
+            background: #0d1117;
+            padding: 18px 25px;
+            border-radius: 8px;
+            font-family: 'Orbitron', monospace;
+            color: #00d9ff;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+            border-left: 4px solid #00d9ff;
+            margin: 20px 0;
+            width: 100%;
+            box-shadow:
+                0 0 15px rgba(0,217,255,0.1);
+        }
+
+        /* =========================================
+           BOTONES
+        ========================================= */
+
+        button {
+            font-family: 'Orbitron', sans-serif;
+
+            background: linear-gradient(
+                90deg,
+                #0066ff,
+                #8d6bff
+            );
+
+            color: white;
+
+            border: 1px solid #00d9ff;
+
+            padding: 15px 30px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            margin-top: 25px;
+
+            transition: all 0.3s ease;
+
+            box-shadow:
+                0 0 10px rgba(0,217,255,0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.02);
+
+            box-shadow:
+                0 0 15px #00d9ff,
+                0 0 35px rgba(141,107,255,0.5);
+        }
+
+        /* =========================================
+           OPCIONES
+        ========================================= */
+
+        .opciones-contenedor {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-opcion {
+            background: #1f2937;
+            border: 1px solid #8d6bff;
+            color: white;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0;
+            font-family: 'Poppins', sans-serif;
+            font-weight: normal;
+            box-shadow: none;
+        }
+
+        .btn-opcion:hover {
+            background: #2d3748;
+            box-shadow: 0 0 15px #8d6bff55;
+            transform: none;
+        }
+
+        .btn-opcion:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* =========================================
+           FEEDBACK
+        ========================================= */
+
+        .resultado-feedback {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            min-height: 30px;
+        }
+
+        .exito {
+            color: #00ff88;
+            text-shadow:
+                0 0 10px #00ff8855,
+                0 0 20px #00ff8833;
+        }
+
+        .error {
+            color: #ff3b3b;
+            text-shadow:
+                0 0 10px #ff3b3b55;
+        }
+
+        /* =========================================
+           PORTAL GENIALLY
+        ========================================= */
+
+        .genially-terminal {
+            width: 1200px !important;
+            max-width: 95vw;
+            padding: 30px;
+        }
+
+        .genially-terminal h3 {
+            text-align: center;
+            font-size: 22px;
+            margin-top: 0;
+        }
+
+        .mensaje-desbloqueo {
+            text-align: center;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            color: #00ff88;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        /* =========================================
+           CONTENEDOR GENIALLY
+        ========================================= */
+
+        .genially-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            margin-top: 25px;
+            overflow: hidden;
+
+            border: 2px solid #00d9ff;
+            border-radius: 12px;
+
+            background: #000;
+
+            box-shadow:
+                0 0 10px #00d9ff,
+                0 0 30px #8d6bff,
+                inset 0 0 20px rgba(0,217,255,0.15);
+        }
+
+        .genially-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* =========================================
+           BOTÓN MAPA GALÁCTICO
+        ========================================= */
+
+        .contenedor-mapa {
+            text-align: center;
+            margin-top: 35px;
+            padding-top: 25px;
+
+            border-top: 1px solid rgba(0,217,255,0.3);
+        }
+
+        .mensaje-final {
+            color: #00ff88;
+
+            font-family: 'Orbitron', sans-serif;
+
+            font-size: 18px;
+
+            text-shadow:
+                0 0 10px #00ff88;
+
+            margin-bottom: 10px;
+        }
+
+        .btn-mapa-galactico {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            font-family: 'Orbitron', sans-serif;
+
+            background: linear-gradient(
+                90deg,
+                #00aaff,
+                #8d6bff,
+                #ffcc00
+            );
+
+            color: white;
+
+            border: 2px solid #00d9ff;
+
+            padding: 18px 35px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.5px;
+
+            margin-top: 15px;
+
+            transition: all 0.3s ease;
+
+            box-shadow:
+                0 0 10px #00d9ff,
+                0 0 25px rgba(141,107,255,0.5);
+
+        }
+
+        .btn-mapa-galactico:hover {
+
+            transform:
+                translateY(-4px)
+                scale(1.04);
+
+            box-shadow:
+                0 0 15px #00d9ff,
+                0 0 30px #8d6bff,
+                0 0 50px rgba(255,204,0,0.4);
+
+        }
+
+        /* =========================================
+           ANIMACIÓN
+        ========================================= */
+
+        @keyframes desbloqueo {
+
+            0% {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+
+            60% {
+                opacity: 1;
+                transform: scale(1.03);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        }
+
+        .animacion-desbloqueo {
+            animation: desbloqueo 1s ease forwards;
+        }
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 700px) {
+
+            .terminal {
+                padding: 25px;
+                max-width: 96vw;
+            }
+
+            h2 {
+                font-size: 21px;
+            }
+
+            p {
+                font-size: 15px;
+            }
+
+            .formula {
+                font-size: 16px;
+                padding: 15px;
+            }
+
+            .genially-terminal {
+                padding: 15px;
+            }
+
+            .btn-mapa-galactico {
+                font-size: 13px;
+                padding: 15px 20px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<!-- =========================================
+     UNIVERSO AXIOM
+========================================= -->
+
+<canvas id="universo"></canvas>
+
+<div id="overlay"></div>
+
+
+<!-- =========================================
+     FASE 0 - TEORÍA
+========================================= -->
+
+<section id="fase-teoria">
+
+    <div class="terminal">
+
+        <h3>
+            FASE 0: ENTRENAMIENTO DE RED
+        </h3>
+
+        <h2>
+            Ley de Composición Interna & Operadores Binarios
+        </h2>
+
+        <p>
+            Antes de adentrarte en el mapa, debes comprender
+            el componente atómico del código algebraico:
+            la <strong>Ley de Composición Interna (LCI)</strong>.
+        </p>
+
+        <p>
+            Un operador binario (como
+            <strong>×</strong>,
+            <strong>*</strong>,
+            <strong>+</strong>
+            o
+            <strong>-</strong>)
+            es una función que toma dos elementos de un conjunto
+            no vacío y los combina.
+        </p>
+
+        <p>
+            Decimos que es una
+            <strong>LCI</strong>
+            si el resultado de esa combinación pertenece
+            obligatoriamente al mismo conjunto original.
+        </p>
+
+        <p class="formula">
+
+            Si a ∈ A y b ∈ A,
+            entonces (a * b) ∈ A
+
+        </p>
+
+        <p>
+            Veamos un ejemplo.
+            Sea <strong>*</strong> definido por:
+        </p>
+
+        <p class="formula">
+
+            a * b = 2a − b
+
+        </p>
+
+        <p style="text-align:center;">
+
+            5 * 3 = 2 · 5 − 3
+            →
+            10 − 3
+            →
+            <strong>7</strong>
+
+        </p>
+
+        <p style="text-align:center;">
+
+            2 * 8 = 2 · 2 − 8
+            →
+            4 − 8
+            →
+            <strong>−4</strong>
+
+        </p>
+
+        <div style="text-align:center;">
+
+            <button id="btnIrAEjercicios">
+
+                ⚡ PROBAR COMPETENCIA
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     FASE DE EJERCICIOS
+========================================= -->
+
+<section id="fase-ejercicios" class="oculto">
+
+    <div class="terminal">
+
+        <h3>
+            EVALUACIÓN DE ENTRADA
+        </h3>
+
+        <p id="pregunta-texto">
+            Cargando enigma matemático...
+        </p>
+
+        <div
+            class="opciones-contenedor"
+            id="contenedor-opciones">
+        </div>
+
+        <div
+            id="feedback"
+            class="resultado-feedback">
+        </div>
+
+        <div style="text-align:center;">
+
+            <button
+                id="btnAcederMapa"
+                class="oculto">
+
+                🚀 DESBLOQUEAR PROTOCOLO DE RED
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     FASE GENIALLY
+========================================= -->
+
+<section id="fase-genially" class="oculto">
+
+    <div class="terminal genially-terminal animacion-desbloqueo">
+
+        <h3>
+
+            ⚡ PORTAL AXIOM DESBLOQUEADO ⚡
+
+        </h3>
+
+        <div class="mensaje-desbloqueo">
+
+            ✓ ACCESO CONCEDIDO<br>
+
+            <span style="color:#00d9ff;">
+                NUEVA MISIÓN DETECTADA
+            </span>
+
+        </div>
+
+        <p style="text-align:center;">
+
+            Has demostrado comprender la
+            <strong>clausura o cerradura</strong>.
+            <br><br>
+
+            El sistema AXIOM ha desbloqueado
+            el siguiente núcleo de conocimiento:
+
+        </p>
+
+        <h2 style="
+            text-align:center;
+            color:#8d6bff;
+            text-shadow:0 0 15px #8d6bff;
+        ">
+
+            🪐 PROTOCOLO DE RED
+
+        </h2>
+
+
+        <!-- =====================================
+             GENIALLY
+        ====================================== -->
+
+        <div class="genially-container">
+
+            <iframe
+                title="Axion: Semigrupo"
+                src="https://view.genially.com/6a6e81eb2e718f67922cd0cf"
+                frameborder="0"
+                allowfullscreen="true"
+                scrolling="yes">
+            </iframe>
+
+        </div>
+
+
+        <!-- =====================================
+             FINALIZAR MISIÓN
+        ====================================== -->
+
+        <div class="contenedor-mapa">
+
+            <div class="mensaje-final">
+
+                ✓ MISIÓN SEMIGRUPO COMPLETADA
+
+            </div>
+
+            <p>
+
+                Has finalizado la actividad. Felicitaciones!!
+                <br>
+                El sistema AXIOM ha registrado tu progreso. Estas listo para recorrer las estrucutras del Mapa Galáctico
+
+            </p>
+
+
+            <a
+                id="btnMapaGalactico"
+                class="btn-mapa-galactico"
+                href="https://sites.google.com/view/mapagalctico/inicio"
+                target="_top">
+
+                🌌 IR a MAPA GALÁCTICO
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+    /* =========================================
+       REFERENCIAS HTML
+    ========================================= */
+
+    const seccionTeoria =
+        document.getElementById("fase-teoria");
+
+    const seccionEjercicios =
+        document.getElementById("fase-ejercicios");
+
+    const seccionGenially =
+        document.getElementById("fase-genially");
+
+    const btnIrAEjercicios =
+        document.getElementById("btnIrAEjercicios");
+
+    const preguntaTexto =
+        document.getElementById("pregunta-texto");
+
+    const contenedorOpciones =
+        document.getElementById("contenedor-opciones");
+
+    const feedback =
+        document.getElementById("feedback");
+
+    const btnAcederMapa =
+        document.getElementById("btnAcederMapa");
+
+
+    /* =========================================
+       PROBLEMA
+    ========================================= */
+
+    const problema = {
+
+        pregunta:
+        "Analiza el entorno: El virus NULL.EXE ha definido la operación de resta (-) en el conjunto de los Números Naturales ℕ (0, 1, 2, 3...). ¿Es esta operación una Ley de Composición Interna?",
+
+        opciones: [
+
+            {
+                texto:
+                "Sí, porque si restas dos números naturales el resultado siempre es un número natural.",
+
+                correcta: false
+            },
+
+            {
+                texto:
+                "No, porque si restas un número menor a uno mayor (ej: 3 - 5 = -2), el resultado (-2) sale de ℕ.",
+
+                correcta: true
+            },
+
+            {
+                texto:
+                "Sí, porque los operadores binarios algebraicos siempre son cerrados por definición.",
+
+                correcta: false
+            }
+
+        ]
+
+    };
+
+
+    /* =========================================
+       IR A EJERCICIOS
+    ========================================= */
+
+    btnIrAEjercicios.onclick = () => {
+
+        seccionTeoria.classList.add("oculto");
+
+        seccionEjercicios.classList.remove("oculto");
+
+        cargarEjercicio();
+
+    };
+
+
+    /* =========================================
+       CARGAR EJERCICIO
+    ========================================= */
+
+    function cargarEjercicio() {
+
+        preguntaTexto.innerText =
+            problema.pregunta;
+
+        contenedorOpciones.innerHTML = "";
+
+        feedback.innerHTML = "";
+
+        problema.opciones.forEach(
+
+            (opcion) => {
+
+                const botonOpcion =
+                    document.createElement("button");
+
+                botonOpcion.classList.add(
+                    "btn-opcion"
+                );
+
+                botonOpcion.innerText =
+                    opcion.texto;
+
+                botonOpcion.onclick = () => {
+
+                    verificarRespuesta(
+                        opcion.correcta
+                    );
+
+                };
+
+                contenedorOpciones.appendChild(
+                    botonOpcion
+                );
+
+            }
+
+        );
+
+    }
+
+
+    /* =========================================
+       VERIFICAR RESPUESTA
+    ========================================= */
+
+    function verificarRespuesta(esCorrecta) {
+
+        if (esCorrecta) {
+
+            feedback.innerHTML =
+
+                "<span class='exito'>" +
+                "✓ ACCESO CONCEDIDO: El código es estable. " +
+                "Has demostrado entender la clausura o cerradura." +
+                "</span>";
+
+            btnAcederMapa.classList.remove(
+                "oculto"
+            );
+
+            document
+                .querySelectorAll(".btn-opcion")
+                .forEach(
+                    boton => {
+                        boton.disabled = true;
+                    }
+                );
+
+        }
+
+        else {
+
+            feedback.innerHTML =
+
+                "<span class='error'>" +
+
+                "✗ ERROR DE COMPILACIÓN: " +
+
+                "El sistema sigue inestable. " +
+
+                "Revisa la propiedad de cerradura " +
+
+                "e intenta de nuevo." +
+
+                "</span>";
+
+        }
+
+    }
+
+
+    /* =========================================
+       ABRIR GENIALLY
+    ========================================= */
+
+    btnAcederMapa.onclick = () => {
+
+        seccionEjercicios.classList.add(
+            "oculto"
+        );
+
+        seccionGenially.classList.remove(
+            "oculto"
+        );
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+
+    };
+
+
+    /* =========================================
+       FONDO DE ESTRELLAS
+    ========================================= */
+
+    const canvas =
+        document.getElementById("universo");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    let estrellas = [];
+
+
+    function ajustarCanvas() {
+
+        canvas.width =
+            window.innerWidth;
+
+        canvas.height =
+            window.innerHeight;
+
+    }
+
+
+    function crearEstrellas() {
+
+        estrellas = [];
+
+        for (
+            let i = 0;
+            i < 180;
+            i++
+        ) {
+
+            estrellas.push({
+
+                x:
+                    Math.random()
+                    * canvas.width,
+
+                y:
+                    Math.random()
+                    * canvas.height,
+
+                radio:
+                    Math.random()
+                    * 1.5,
+
+                velocidad:
+                    Math.random()
+                    * 0.3 + 0.05
+
+            });
+
+        }
+
+    }
+
+
+    function dibujarEstrellas() {
+
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        estrellas.forEach(
+            estrella => {
+
+                ctx.beginPath();
+
+                ctx.arc(
+
+                    estrella.x,
+
+                    estrella.y,
+
+                    estrella.radio,
+
+                    0,
+
+                    Math.PI * 2
+
+                );
+
+                ctx.fillStyle =
+                    "rgba(255,255,255,0.8)";
+
+                ctx.fill();
+
+                estrella.y +=
+                    estrella.velocidad;
+
+                if (
+                    estrella.y >
+                    canvas.height
+                ) {
+
+                    estrella.y = 0;
+
+                }
+
+            }
+        );
+
+        requestAnimationFrame(
+            dibujarEstrellas
+        );
+
+    }
+
+
+    ajustarCanvas();
+
+    crearEstrellas();
+
+    dibujarEstrellas();
+
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            ajustarCanvas();
+
+            crearEstrellas();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

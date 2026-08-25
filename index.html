@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PROJECT AXIOM</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+<style>
+        /* --- AJUSTE DE ANCHO DE LA TERMINAL --- */
+        .terminal {
+            width: 1100px; /* Recuadro mucho más ancho */
+            max-width: 95%; /* Para que no se corte en pantallas medianas */
+            padding: 35px;
+        }
+
+        /* --- ESTILO PARA EL RECUADRO DE ESCRITURA (TEXTAREA) --- */
+        .caja-escritura {
+            width: 100%;
+            height: 180px; /* Altura del recuadro para escribir */
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background: #0d1117; /* Fondo oscuro interno */
+            border: 1px solid #8d6bff; /* Borde violeta */
+            border-radius: 8px;
+            color: #00d9ff; /* Texto color cian al escribir */
+            font-family: 'Poppins', monospace;
+            font-size: 16px;
+            padding: 15px;
+            box-sizing: border-box;
+            resize: vertical; /* Permite al usuario estirarlo hacia abajo si quiere */
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .caja-escritura:focus {
+            border-color: #00c8ff;
+            box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
+        }
+
+        /* Estilos para los ejercicios */
+        .opciones-contenedor {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .btn-opcion {
+            background: #1f2937;
+            border: 1px solid #8d6bff;
+            color: white;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0px;
+        }
+        .btn-opcion:hover {
+            background: #2d3748;
+            box-shadow: 0 0 15px #8d6bff55;
+            transform: none;
+        }
+        .resultado-feedback {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            min-height: 30px;
+        }
+        .exito { color: #00ff88; text-shadow: 0 0 10px #00ff8855; }
+        .error { color: #ff3b3b; text-shadow: 0 0 10px #ff3b3b55; }
+        .formula {
+            background: #0d1117;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            color: #00d9ff;
+            font-size: 18px;
+        }
+    </style> 
+    <!--esto es lo que agrregue-->
+
+</head>
+
+<body>
+
+<canvas id="universo"></canvas>
+
+<div id="overlay"></div>
+
+<section id="inicio">
+
+    <div class="logo">
+
+        <h1>PROJECT AXIOM</h1>
+
+        <h2>Recuperando el Código Algebraico</h2>
+
+        <p>
+
+        Año 2150...
+
+        Un virus llamado <strong>NULL.EXE</strong> está destruyendo las
+        estructuras algebraicas.
+
+        Sin ellas, las computadoras han dejado de funcionar.
+
+        Tú eres el único agente capaz de restaurarlas.
+
+        </p>
+
+        <button id="btnComenzar">
+
+            INICIAR MISIÓN
+
+        </button>
+
+    </div>
+
+</section>
+
+<section id="historia" class="oculto">
+
+<div class="terminal">
+
+<h3>TRANSMISIÓN ENTRANTE...</h3>
+
+<p id="textoIA"></p>
+
+<button id="continuar">
+
+ACEPTAR MISIÓN
+
+</button>
+
+</div>
+
+</section>
+
+
+<script src="js/universo.js"></script>
+<script src="js/script.js"></script>
+<audio id="musica">
+
+    <source src="audio/musica.mp3" type="audio/mpeg">
+
+</audio>
+
+</body>
+
+</html>
