@@ -14,88 +14,275 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/style.css">
+
 <style>
-        /* --- AJUSTE DE ANCHO DE LA TERMINAL --- */
-        .terminal {
-            width: 1100px; /* Recuadro mucho más ancho */
-            max-width: 95%; /* Para que no se corte en pantallas medianas */
-            padding: 35px;
-        }
 
-        /* --- ESTILO PARA EL RECUADRO DE ESCRITURA (TEXTAREA) --- */
-        .caja-escritura {
-            width: 100%;
-            height: 180px; /* Altura del recuadro para escribir */
-            margin-top: 20px;
-            margin-bottom: 20px;
-            background: #0d1117; /* Fondo oscuro interno */
-            border: 1px solid #8d6bff; /* Borde violeta */
-            border-radius: 8px;
-            color: #00d9ff; /* Texto color cian al escribir */
-            font-family: 'Poppins', monospace;
-            font-size: 16px;
-            padding: 15px;
-            box-sizing: border-box;
-            resize: vertical; /* Permite al usuario estirarlo hacia abajo si quiere */
-            outline: none;
-            transition: 0.3s;
-        }
+/* =====================================================
+   AJUSTE DE ANCHO DE LA TERMINAL
+===================================================== */
 
-        .caja-escritura:focus {
-            border-color: #00c8ff;
-            box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
-        }
+.terminal {
 
-        /* Estilos para los ejercicios */
-        .opciones-contenedor {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        .btn-opcion {
-            background: #1f2937;
-            border: 1px solid #8d6bff;
-            color: white;
-            padding: 15px;
-            font-size: 16px;
-            border-radius: 8px;
-            text-align: left;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 0px;
-        }
-        .btn-opcion:hover {
-            background: #2d3748;
-            box-shadow: 0 0 15px #8d6bff55;
-            transform: none;
-        }
-        .resultado-feedback {
-            margin-top: 20px;
-            font-weight: bold;
-            font-size: 18px;
-            min-height: 30px;
-        }
-        .exito { color: #00ff88; text-shadow: 0 0 10px #00ff8855; }
-        .error { color: #ff3b3b; text-shadow: 0 0 10px #ff3b3b55; }
-        .formula {
-            background: #0d1117;
-            padding: 10px;
-            border-radius: 5px;
-            font-family: monospace;
-            color: #00d9ff;
-            font-size: 18px;
-        }
-    </style> 
-    <!--esto es lo que agrregue-->
+    width: 1100px;
+
+    max-width: 95%;
+
+    padding: 35px;
+}
+
+
+/* =====================================================
+   RECUADRO DE ESCRITURA
+===================================================== */
+
+.caja-escritura {
+
+    width: 100%;
+
+    height: 180px;
+
+    margin-top: 20px;
+
+    margin-bottom: 20px;
+
+    background: #0d1117;
+
+    border: 1px solid #8d6bff;
+
+    border-radius: 8px;
+
+    color: #00d9ff;
+
+    font-family: 'Poppins', monospace;
+
+    font-size: 16px;
+
+    padding: 15px;
+
+    box-sizing: border-box;
+
+    resize: vertical;
+
+    outline: none;
+
+    transition: 0.3s;
+}
+
+
+.caja-escritura:focus {
+
+    border-color: #00c8ff;
+
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
+
+}
+
+
+/* =====================================================
+   ESTILOS PARA LOS EJERCICIOS
+===================================================== */
+
+.opciones-contenedor {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+
+.btn-opcion {
+
+    background: #1f2937;
+
+    border: 1px solid #8d6bff;
+
+    color: white;
+
+    padding: 15px;
+
+    font-size: 16px;
+
+    border-radius: 8px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    margin-top: 0px;
+}
+
+
+.btn-opcion:hover {
+
+    background: #2d3748;
+
+    box-shadow: 0 0 15px #8d6bff55;
+
+    transform: none;
+
+}
+
+
+/* =====================================================
+   RESULTADO
+===================================================== */
+
+.resultado-feedback {
+
+    margin-top: 20px;
+
+    font-weight: bold;
+
+    font-size: 18px;
+
+    min-height: 30px;
+}
+
+
+.exito {
+
+    color: #00ff88;
+
+    text-shadow: 0 0 10px #00ff8855;
+
+}
+
+
+.error {
+
+    color: #ff3b3b;
+
+    text-shadow: 0 0 10px #ff3b3b55;
+
+}
+
+
+.formula {
+
+    background: #0d1117;
+
+    padding: 10px;
+
+    border-radius: 5px;
+
+    font-family: monospace;
+
+    color: #00d9ff;
+
+    font-size: 18px;
+
+}
+
+
+/* =====================================================
+   🎵 BOTÓN DE MÚSICA AXIOM
+===================================================== */
+
+#controlMusica {
+
+    position: fixed;
+
+    right: 25px;
+
+    bottom: 25px;
+
+    z-index: 9999;
+
+    padding: 12px 18px;
+
+    border-radius: 12px;
+
+    border: 1px solid #ffe600;
+
+    background: rgba(3, 5, 18, 0.94);
+
+    color: #ffe600;
+
+    font-family: 'Orbitron', sans-serif;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 8px #ffe600,
+        0 0 20px rgba(255, 180, 0, 0.5);
+
+    transition: 0.3s;
+
+    display: none;
+
+}
+
+
+#controlMusica:hover {
+
+    transform: scale(1.05);
+
+    box-shadow:
+        0 0 15px #ffe600,
+        0 0 30px rgba(255, 180, 0, 0.8);
+
+}
+
+
+#controlMusica.activa {
+
+    color: #00eaff;
+
+    border-color: #00eaff;
+
+    box-shadow:
+        0 0 10px #00eaff,
+        0 0 25px rgba(0, 220, 255, 0.6);
+
+}
+
+</style>
 
 </head>
 
+
 <body>
+
+
+<!-- =====================================================
+     UNIVERSO
+===================================================== -->
 
 <canvas id="universo"></canvas>
 
 <div id="overlay"></div>
+
+
+<!-- =====================================================
+     🎵 MÚSICA PROJECT AXIOM
+     
+     axiom.mp3 está en la raíz del repositorio
+===================================================== -->
+
+<audio id="musica" loop>
+
+    <source src="axiom.mp3" type="audio/mpeg">
+
+    Tu navegador no soporta audio HTML5.
+
+</audio>
+
+
+<!-- =====================================================
+     INICIO
+===================================================== -->
 
 <section id="inicio">
 
@@ -118,6 +305,7 @@
 
         </p>
 
+
         <button id="btnComenzar">
 
             INICIAR MISIÓN
@@ -128,32 +316,153 @@
 
 </section>
 
+
+<!-- =====================================================
+     HISTORIA
+===================================================== -->
+
 <section id="historia" class="oculto">
 
-<div class="terminal">
+    <div class="terminal">
 
-<h3>TRANSMISIÓN ENTRANTE...</h3>
+        <h3>TRANSMISIÓN ENTRANTE...</h3>
 
-<p id="textoIA"></p>
+        <p id="textoIA"></p>
 
-<button id="continuar">
+        <button id="continuar">
 
-ACEPTAR MISIÓN
+            ACEPTAR MISIÓN
 
-</button>
+        </button>
 
-</div>
+    </div>
 
 </section>
 
 
+<!-- =====================================================
+     BOTÓN DE CONTROL DE MÚSICA
+===================================================== -->
+
+<button id="controlMusica">
+
+    🔊 MÚSICA AXIOM
+
+</button>
+
+
+<!-- =====================================================
+     JAVASCRIPT ORIGINAL DE AXIOM
+===================================================== -->
+
 <script src="js/universo.js"></script>
+
 <script src="js/script.js"></script>
-<audio id="musica">
 
-    <source src="audio/musica.mp3" type="audio/mpeg">
 
-</audio>
+<!-- =====================================================
+     CONTROL DE LA MÚSICA
+===================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+
+
+    /* ============================================
+       ELEMENTOS
+    ============================================ */
+
+    const musica = document.getElementById("musica");
+
+    const btnComenzar =
+        document.getElementById("btnComenzar");
+
+    const controlMusica =
+        document.getElementById("controlMusica");
+
+
+    /* ============================================
+       VOLUMEN
+
+       0.45 = volumen moderado
+    ============================================ */
+
+    musica.volume = 0.45;
+
+
+    /* ============================================
+       INICIAR MÚSICA AL COMENZAR LA MISIÓN
+    ============================================ */
+
+    btnComenzar.addEventListener("click", function() {
+
+
+        musica.play()
+        .then(function() {
+
+            /* Mostrar botón de control */
+
+            controlMusica.style.display = "block";
+
+            controlMusica.classList.add("activa");
+
+            controlMusica.innerHTML =
+                "🔊 MÚSICA AXIOM";
+
+        })
+        .catch(function(error) {
+
+            console.log(
+                "No se pudo iniciar la música:",
+                error
+            );
+
+        });
+
+    });
+
+
+    /* ============================================
+       BOTÓN ENCENDER / APAGAR
+    ============================================ */
+
+    controlMusica.addEventListener("click", function() {
+
+
+        /* Si está apagada */
+
+        if (musica.paused) {
+
+            musica.play();
+
+            controlMusica.classList.add("activa");
+
+            controlMusica.innerHTML =
+                "🔊 MÚSICA AXIOM";
+
+        }
+
+
+        /* Si está encendida */
+
+        else {
+
+            musica.pause();
+
+            controlMusica.classList.remove("activa");
+
+            controlMusica.innerHTML =
+                "🔇 MÚSICA OFF";
+
+        }
+
+    });
+
+});
+
+</script>
+
 
 </body>
 
